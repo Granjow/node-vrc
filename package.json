@@ -1,0 +1,33 @@
+{
+  "name": "vrc",
+  "version": "1.0.0",
+  "description": "Extended rc configuration loader with schema and help",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/Granjow/node-vrc.git"
+  },
+  "keywords": [
+    "rc",
+    "config"
+  ],
+  "author": "Simon A. Eugster <simon.eu@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Granjow/node-vrc/issues"
+  },
+  "homepage": "https://github.com/Granjow/node-vrc#readme",
+  "devDependencies": {
+    "@types/node": "^11.9.4",
+    "typescript": "^3.3.3"
+  },
+  "dependencies": {
+    "chalk": "^2.4.2",
+    "check-types": "^8.0.1",
+    "rc": "^1.2.8"
+  }
+}
