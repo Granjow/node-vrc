@@ -4,6 +4,8 @@ This is a configuration loader based on [rc](https://www.npmjs.com/package/rc),
 extended by argument validation and `--help`.
 
 ```js
+const vrc = require( 'vrc' );
+
 const conf = vrc( 'test', [
     { name: 'name', dflt: 'Jack', desc: 'Name to print', type: 'string' },
 ] );
