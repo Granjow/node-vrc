@@ -2,9 +2,10 @@
   "name": "vrc",
   "version": "1.0.0",
   "description": "Extended rc configuration loader with schema and help",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
+    "prepack": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
