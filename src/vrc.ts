@@ -23,6 +23,10 @@ function checkInvalidNames( conf : any, validArgs : RcvConfig[] ) : Set<string> 
             if ( !check.string( val ) ) {
                 console.error( `Argument ${key} must be a string, is ${JSON.stringify( val )}` )
             }
+        } else if ( type === 'boolean' || type === 'bool' ) {
+            if ( !check.boolean( val ) ) {
+                console.error( `Argument ${key} must be a boolean, is ${JSON.stringify( val )}` );
+            }
         } else {
             throw new Error( `Unknown argument type ${type}` );
         }

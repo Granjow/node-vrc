@@ -26,4 +26,4 @@ name : string [Jack] → Jack
 * `name`: Name of the variable/parameter
 * `desc`: Description, shown in the help
 * `dflt`: Default value
-* `type`: Can be `'string'` or `'number'` at the moment
+* `type`: Supported values: `'string'`, `'number'`, `'boolean'`
