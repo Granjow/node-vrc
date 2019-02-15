@@ -31,6 +31,16 @@ function checkInvalidNames( conf : any, validArgs : RcvConfig[] ) : Set<string> 
     return invalidNames;
 }
 
+/**
+ *
+ * @param {string} appName Name of the application to be used for configuration file names
+ * @param {{
+ *      name: string,
+ *      type: string,
+ *      desc: string,
+ *      dflt,
+ * }[]} validArgs List of arguments
+ */
 export function vrc( appName : string, validArgs : RcvConfig[] ) {
 
     const rcObj : any = {};
