@@ -35,6 +35,14 @@ function checkInvalidNames( conf : any, validArgs : RcvConfig[] ) : Set<string> 
     return invalidNames;
 }
 
+function replaceInvalidsByDefaults( conf : any, validArgs : RcvConfig[], invalidNames : Set<string> ) {
+    validArgs.forEach( ( arg : RcvConfig ) => {
+        if ( invalidNames.has( arg.name ) ) {
+            conf[ arg.name ] = arg.dflt;
+        }
+    } );
+}
+
 /**
  *
  * @param {string} appName Name of the application to be used for configuration file names
@@ -45,7 +53,7 @@ function checkInvalidNames( conf : any, validArgs : RcvConfig[] ) : Set<string> 
  *      dflt,
  * }[]} validArgs List of arguments
  */
-export function vrc( appName : string, validArgs : RcvConfig[] ) {
+export function vrc( appName : string, validArgs : RcvConfig[] ) : { conf : any, invalidNames : string[] } {
 
     const rcObj : any = {};
     let errorCount = 0;
@@ -68,9 +76,7 @@ export function vrc( appName : string, validArgs : RcvConfig[] ) {
         process.exit( exitCode );
     }
 
-    if ( errorCount > 0 ) {
-        process.exit( exitCode );
-    }
+    replaceInvalidsByDefaults( conf, validArgs, invalidNames );
 
-    return conf;
+    return { conf, invalidNames: Array.from( invalidNames ) };
 }

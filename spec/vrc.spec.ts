@@ -18,7 +18,7 @@ describe( 'vrc', () => {
 
         const conf = vrc( appName, [
             { name: 'name', dflt: 'Unset', desc: 'Name to print', type: 'string' },
-        ] );
+        ] ).conf;
 
         expect( conf[ 'name' ] ).toBe( name );
 
@@ -30,7 +30,7 @@ describe( 'vrc', () => {
 
         const conf = vrc( appName, [
             { name: 'value', dflt: 1, desc: 'Foo', type: 'number' },
-        ] );
+        ] ).conf;
 
         expect( conf[ 'value' ] ).toBe( 1 );
 
