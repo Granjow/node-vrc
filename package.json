@@ -2,15 +2,15 @@
   "name": "vrc",
   "version": "1.4.0",
   "description": "Extended rc configuration loader with schema and help and TypeScript support",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
   "files": [
     "dist/src/*"
   ],
   "scripts": {
     "build": "tsc",
     "prepack": "rm -rf dist && npm run build",
-    "prepublish": "npm run test",
+    "prepublishOnly": "npm run test",
     "test": "tsc && jasmine"
   },
   "repository": {
