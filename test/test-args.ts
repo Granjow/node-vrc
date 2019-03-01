@@ -1,5 +1,5 @@
-import { vrc } from './vrc';
 import * as util from 'util';
+import { vrc } from '../src';
 
 const conf = vrc( 'test', [
     { name: 'name', dflt: 'Jack', desc: 'Name to print', type: 'string' },

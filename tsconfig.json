@@ -5,6 +5,7 @@
     "removeComments": false,
     "preserveConstEnums": true,
     "inlineSourceMap": true,
+    "declaration": true,
     "outDir": "dist",
     "moduleResolution": "node",
     "target": "ES6",
@@ -14,7 +15,8 @@
   },
   "include": [
     "src/**/*",
-    "spec/**/*"
+    "spec/**/*",
+    "test/**/*"
   ],
   "exclude": [
     "node_modules",
