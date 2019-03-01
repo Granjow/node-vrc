@@ -10,6 +10,7 @@
   "scripts": {
     "build": "tsc",
     "prepack": "rm -rf dist && npm run build",
+    "prepublish": "npm run test",
     "test": "tsc && jasmine"
   },
   "repository": {
