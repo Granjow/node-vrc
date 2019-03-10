@@ -13,7 +13,7 @@ const conf = vrc( 'myAppName', [
 console.log( `Name: ${conf.name}` );
 ```
 
-Automatic help generation:
+**Automatic help** shows default values and actually used values.
 
 ![Help demo](help-demo.png)
 
