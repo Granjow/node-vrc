@@ -10,6 +10,10 @@ describe( 'Verifiers', () => {
             expect( result.value ).toEqual( [ 1, 2, 3 ] );
         } );
 
+        it( 'allows JS number arrays', () => {
+            expect( verifyNumberArray( 'foo', [ 1, 2, 3 ] ).valid ).toBe( true );
+        } );
+
         it( 'rejects invalid values', () => {
             expect( verifyNumberArray( 'foo', '1,b,3' ).valid ).toBe( false );
         } );

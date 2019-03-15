@@ -16,8 +16,16 @@ export const verifyNumber = ( key : string, val : any ) : ValidationResult => {
 };
 
 export const verifyNumberArray = ( key : string, val : any ) : ValidationResult => {
-    const numbers = val && val.split && val.split( ',' ).map( Number );
-    const valid = check.array.of.number( numbers );
+
+    let numbers : number[];
+    let valid = true;
+
+    if ( check.array.of.number( val ) ) {
+        numbers = val;
+    } else {
+        numbers = val && val.split && val.split( ',' ).map( Number );
+        valid = check.array.of.number( numbers );
+    }
     return {
         valid,
         value: numbers,
