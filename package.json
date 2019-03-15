@@ -11,7 +11,7 @@
     "build": "tsc",
     "prepack": "rm -rf dist && npm run build",
     "prepublishOnly": "npm run test",
-    "test": "tsc && jasmine"
+    "test": "jasmine"
   },
   "repository": {
     "type": "git",

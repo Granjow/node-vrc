@@ -36,4 +36,16 @@ describe( 'vrc', () => {
 
     } );
 
+    it( 'supports and converts number arrays', () => {
+
+        fs.writeFileSync( configPath, JSON.stringify( { value: '1,2,3,4,42' } ) );
+
+        const conf = vrc( appName, [
+            { name: 'value', dflt: [ 1, 9, 11 ], desc: 'Foo', type: 'number[]' },
+        ] ).conf;
+
+        expect( conf[ 'value' ] ).toEqual( [ 1, 2, 3, 4, 42 ] );
+
+    } );
+
 } );

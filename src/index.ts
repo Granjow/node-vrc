@@ -1,4 +1,5 @@
-const check = require( 'check-types' );
+import { ValidationResult, verifyBoolean, verifyNumber, verifyNumberArray, verifyString } from './verifiers';
+
 const chalk = require( 'chalk' );
 const rc = require( 'rc' );
 
@@ -9,26 +10,33 @@ export interface RcvConfig {
     dflt : any;
 }
 
+const verifiers : Map<string, ( key : string, val : string ) => ValidationResult> = new Map();
+
+verifiers.set( 'number', verifyNumber );
+verifiers.set( 'number[]', verifyNumberArray );
+verifiers.set( 'string', verifyString );
+verifiers.set( 'boolean', verifyBoolean );
+verifiers.set( 'bool', verifyBoolean );
+
+
 function checkInvalidNames( conf : any, validArgs : RcvConfig[] ) : Set<string> {
     const invalidNames : Set<string> = new Set();
 
     for ( let el of validArgs ) {
+
         const [ key, val, type ] = [ el.name, conf[ el.name ], el.type ];
-        if ( type === 'number' ) {
-            if ( !check.number( val ) ) {
-                console.error( `Argument ${key} must be a number, is ${JSON.stringify( val )}` );
-                invalidNames.add( el.name );
-            }
-        } else if ( type === 'string' ) {
-            if ( !check.string( val ) ) {
-                console.error( `Argument ${key} must be a string, is ${JSON.stringify( val )}` )
-            }
-        } else if ( type === 'boolean' || type === 'bool' ) {
-            if ( !check.boolean( val ) ) {
-                console.error( `Argument ${key} must be a boolean, is ${JSON.stringify( val )}` );
-            }
+
+        const verifier = verifiers.get( el.type );
+        if ( !verifier ) {
+            throw new Error( `Unknown argument type ${type}, no verifier found.` );
+        }
+
+        const validationResult = verifier( key, val );
+
+        if ( validationResult.valid ) {
+            conf[ el.name ] = validationResult.value;
         } else {
-            throw new Error( `Unknown argument type ${type}` );
+            invalidNames.add( key );
         }
     }
 
@@ -56,7 +64,6 @@ function replaceInvalidsByDefaults( conf : any, validArgs : RcvConfig[], invalid
 export function vrc( appName : string, validArgs : RcvConfig[] ) : { conf : any, invalidNames : string[] } {
 
     const rcObj : any = {};
-    let errorCount = 0;
 
     validArgs.forEach( ( el ) => rcObj[ el.name ] = el.dflt );
 

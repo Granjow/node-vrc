@@ -5,4 +5,5 @@ test:
     - linux
   script:
     - npm install
+    - npm run build
     - npm run test
