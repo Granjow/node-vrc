@@ -1,4 +1,11 @@
-import { ValidationResult, verifyBoolean, verifyNumber, verifyNumberArray, verifyString } from './verifiers';
+import {
+    ValidationResult,
+    verify2dNumberArray,
+    verifyBoolean,
+    verifyNumber,
+    verifyNumberArray,
+    verifyString
+} from './verifiers';
 
 const chalk = require( 'chalk' );
 const rc = require( 'rc' );
@@ -14,6 +21,7 @@ const verifiers : Map<string, ( key : string, val : string ) => ValidationResult
 
 verifiers.set( 'number', verifyNumber );
 verifiers.set( 'number[]', verifyNumberArray );
+verifiers.set( 'number[][]', verify2dNumberArray );
 verifiers.set( 'string', verifyString );
 verifiers.set( 'boolean', verifyBoolean );
 verifiers.set( 'bool', verifyBoolean );
