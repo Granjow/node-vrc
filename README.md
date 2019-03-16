@@ -30,7 +30,7 @@ A configuration entry takes the following arguments:
 * `name`: Name of the variable/parameter
 * `desc`: Description, shown in the help
 * `dflt`: Default value
-* `type`: Supported values: `'string'`, `'number'`, `'boolean'`, `number[]`
+* `type`: Supported values: `'string'`, `'number'`, `'boolean'`, `number[]`, `number[][]`
 
 Number arrays are passed as comma-separated values and are converted; `1,3,42` results in `[1,3,42]`.
 

@@ -29,8 +29,31 @@ export const verifyNumberArray = ( key : string, val : any ) : ValidationResult 
     return {
         valid,
         value: numbers,
-        warning: `Argument ${key} must be a comma-separated list of numbers, is ${JSON.stringify( val )}`,
+        warning: !valid && `Argument ${key} must be a comma-separated list of numbers, is ${JSON.stringify( val )}`,
+    };
+};
+
+export const verify2dNumberArray = ( key : string, val : any ) : ValidationResult => {
+
+    let numbers : number[][] = [];
+    let valid = false;
+
+    if ( check.array( val ) ) {
+        valid = val.every( ( el : any ) => check.array.of.number( el ) );
+    } else {
+        try {
+            let parsed = JSON.parse( val );
+            return verify2dNumberArray( key, parsed );
+        } catch ( e ) {
+
+        }
     }
+
+    return {
+        valid,
+        value: val,
+        warning: !valid && `Argument ${key} must be a 2D array in JSON format (e.g. [[1,2],[3]]), is ${JSON.stringify( val )}`,
+    };
 };
 
 export const verifyString = ( key : string, val : any ) : ValidationResult => {
