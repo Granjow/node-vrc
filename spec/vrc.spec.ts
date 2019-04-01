@@ -7,7 +7,10 @@ describe( 'vrc', () => {
     const configPath = `./.${appName}rc`;
 
     afterEach( () => {
-        fs.unlinkSync( configPath );
+        try {
+            fs.unlinkSync( configPath );
+        } catch ( e ) {
+        }
     } );
 
     it( 'accepts configured arguments', () => {
@@ -58,6 +61,14 @@ describe( 'vrc', () => {
 
         expect( conf[ 'value' ] ).toEqual( [ [ 1, 2 ], [ 3 ] ] );
 
+    } );
+
+    it( 'throws an error when the same key is defined twice', () => {
+        const f = () => vrc( appName, [
+            { name: 'value', dflt: false, desc: 'Foo', type: 'boolean' },
+            { name: 'value', dflt: false, desc: 'Foo', type: 'boolean' },
+        ] );
+        expect( f ).toThrow();
     } );
 
 } );

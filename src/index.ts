@@ -59,6 +59,21 @@ function replaceInvalidsByDefaults( conf : any, validArgs : RcvConfig[], invalid
     } );
 }
 
+const getDuplicateKeys = ( args : RcvConfig[] ) : string[] => {
+    const keys : Set<string> = new Set();
+    const duplicates : string[] = [];
+
+    args.forEach( ( entry ) => {
+        if ( keys.has( entry.name ) ) {
+            duplicates.push( entry.name );
+        } else {
+            keys.add( entry.name );
+        }
+    } );
+
+    return duplicates;
+};
+
 /**
  *
  * @param {string} appName Name of the application to be used for configuration file names
@@ -74,6 +89,9 @@ export function vrc( appName : string, validArgs : RcvConfig[] ) : { conf : any,
     const rcObj : any = {};
 
     validArgs.forEach( ( el ) => rcObj[ el.name ] = el.dflt );
+
+    const duplicates = getDuplicateKeys( validArgs );
+    if ( duplicates.length > 0 ) throw new Error( `Duplicate definitions for: ${duplicates.join( ',' )}` );
 
     const conf : any = rc( appName, rcObj );
 
