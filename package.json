@@ -1,6 +1,6 @@
 {
   "name": "vrc",
-  "version": "1.6.1",
+  "version": "1.6.2",
   "description": "Extended rc configuration loader with schema and help and TypeScript support",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
