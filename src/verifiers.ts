@@ -22,6 +22,8 @@ export const verifyNumberArray = ( key : string, val : any ) : ValidationResult 
 
     if ( check.array.of.number( val ) ) {
         numbers = val;
+    } else if ( check.number( val ) ) {
+        numbers = [ val ];
     } else {
         numbers = val && val.split && val.split( ',' ).map( Number );
         valid = check.array.of.number( numbers );

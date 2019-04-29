@@ -10,6 +10,18 @@ describe( 'Verifiers', () => {
             expect( result.value ).toEqual( [ 1, 2, 3 ] );
         } );
 
+        it( 'parses single string number', () => {
+            const result = verifyNumberArray( 'foo', '12' );
+            expect( result.valid ).toBe( true );
+            expect( result.value ).toEqual( [ 12 ] );
+        } );
+
+        it( 'parses single int number', () => {
+            const result = verifyNumberArray( 'foo', 12 );
+            expect( result.valid ).toBe( true );
+            expect( result.value ).toEqual( [ 12 ] );
+        } );
+
         it( 'allows JS number arrays', () => {
             expect( verifyNumberArray( 'foo', [ 1, 2, 3 ] ).valid ).toBe( true );
             expect( verifyNumberArray( 'foo', [ 1, 2, 3 ] ).warning ).not.toBeTruthy();
