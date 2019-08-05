@@ -1,6 +1,41 @@
-import { verify2dNumberArray, verifyNumberArray } from '../src/verifiers';
+import { verify2dNumberArray, verifyBoolean, verifyNumberArray } from '../src/verifiers';
 
 describe( 'Verifiers', () => {
+
+    describe( 'Boolean', () => {
+
+        it( 'parses booleans (true)', () => {
+            const result = verifyBoolean( '', true );
+            expect( result.valid ).toBe( true );
+            expect( result.value ).toBe( true );
+        } );
+
+        it( 'parses booleans (false)', () => {
+            const result = verifyBoolean( '', false );
+            expect( result.valid ).toBe( true );
+            expect( result.value ).toBe( false );
+        } );
+
+        it( 'parses strings (true)', () => {
+            const result = verifyBoolean( '', 'true' );
+            expect( result.valid ).toBe( true );
+            expect( result.value ).toBe( true );
+        } );
+
+        it( 'parses strings (false)', () => {
+            const result = verifyBoolean( '', 'false' );
+            expect( result.valid ).toBe( true );
+            expect( result.value ).toBe( false );
+        } );
+
+        it( 'does not allow other values', () => {
+            const tests = [ 'abc', 'true ', '', undefined, null, 22, 1, 0, -1 ];
+            for ( let test in tests ) {
+                expect( verifyBoolean( '', test ).valid ).toBe( false, `Not a boolean: ${test}` );
+            }
+        } );
+
+    } );
 
     describe( 'Number array', () => {
 

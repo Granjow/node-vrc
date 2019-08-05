@@ -37,7 +37,6 @@ export const verifyNumberArray = ( key : string, val : any ) : ValidationResult 
 
 export const verify2dNumberArray = ( key : string, val : any ) : ValidationResult => {
 
-    let numbers : number[][] = [];
     let valid = false;
 
     if ( check.array( val ) ) {
@@ -68,10 +67,12 @@ export const verifyString = ( key : string, val : any ) : ValidationResult => {
 };
 
 export const verifyBoolean = ( key : string, val : any ) : ValidationResult => {
-    const isValid = check.boolean( val );
+    const isTrue = val === true || ( check.string( val ) && ( val as string ).toLowerCase() === 'true' );
+    const isFalse = val === false || ( check.string( val ) && ( val as string ).toLowerCase() === 'false' );
+    const isValid = isTrue || isFalse;
     return {
         valid: isValid,
-        value: val,
+        value: isTrue ? true : false,
         warning: !isValid && `Argument ${key} must be a boolean, is ${JSON.stringify( val )}`,
     }
 };
