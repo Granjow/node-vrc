@@ -10,11 +10,15 @@ import {
 const chalk = require( 'chalk' );
 const rc = require( 'rc' );
 
-export interface RcvConfig {
+export interface VrcArgument {
     name : string;
     type : string;
     desc : string;
     dflt : any;
+}
+
+export interface VrcSettings {
+    description? : string;
 }
 
 const verifiers : Map<string, ( key : string, val : string ) => ValidationResult> = new Map();
@@ -27,7 +31,7 @@ verifiers.set( 'boolean', verifyBoolean );
 verifiers.set( 'bool', verifyBoolean );
 
 
-function checkInvalidNames( conf : any, validArgs : RcvConfig[] ) : Set<string> {
+function checkInvalidNames( conf : any, validArgs : VrcArgument[] ) : Set<string> {
     const invalidNames : Set<string> = new Set();
 
     for ( let el of validArgs ) {
@@ -51,15 +55,15 @@ function checkInvalidNames( conf : any, validArgs : RcvConfig[] ) : Set<string> 
     return invalidNames;
 }
 
-function replaceInvalidsByDefaults( conf : any, validArgs : RcvConfig[], invalidNames : Set<string> ) {
-    validArgs.forEach( ( arg : RcvConfig ) => {
+function replaceInvalidsByDefaults( conf : any, validArgs : VrcArgument[], invalidNames : Set<string> ) {
+    validArgs.forEach( ( arg : VrcArgument ) => {
         if ( invalidNames.has( arg.name ) ) {
             conf[ arg.name ] = arg.dflt;
         }
     } );
 }
 
-const getDuplicateKeys = ( args : RcvConfig[] ) : string[] => {
+const getDuplicateKeys = ( args : VrcArgument[] ) : string[] => {
     const keys : Set<string> = new Set();
     const duplicates : string[] = [];
 
@@ -83,8 +87,9 @@ const getDuplicateKeys = ( args : RcvConfig[] ) : string[] => {
  *      desc: string,
  *      dflt,
  * }[]} validArgs List of arguments
+ * @param settings Additional settings for vrc
  */
-export function vrc( appName : string, validArgs : RcvConfig[] ) : { conf : any, invalidNames : string[] } {
+export function vrc( appName : string, validArgs : VrcArgument[], settings? : VrcSettings ) : { conf : any, invalidNames : string[] } {
 
     const rcObj : any = {};
 
@@ -100,12 +105,15 @@ export function vrc( appName : string, validArgs : RcvConfig[] ) : { conf : any,
 
     if ( conf.h || conf.help ) {
         console.log( `Usage: ${process.argv[ 0 ]} [OPTIONS]\n` );
-        console.log( `Configuration files can be stored in .${appName}rc in this or a parent directory,\nor in another location checked by rc: https://www.npmjs.com/package/rc\n` );
+        if ( settings && settings.description ) {
+            console.log( settings.description + '\n' );
+        }
         validArgs.forEach( ( el ) => {
             const valueColor = invalidNames.has( el.name ) ? chalk.bold.red : chalk.bold.blue;
             const val = valueColor( conf[ el.name ] );
             console.log( `${chalk.green( el.name )} : ${el.type} [${el.dflt}] → ${val}\n\t${el.desc}\n` );
         } );
+        console.log( `Configuration files can be stored in .${appName}rc in this or a parent directory,\nor in another location checked by rc: https://www.npmjs.com/package/rc\n` );
         process.exit( exitCode );
     }
 
