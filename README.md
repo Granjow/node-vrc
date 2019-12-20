@@ -8,7 +8,7 @@ const { vrc } = require( 'vrc' );
 
 const conf = vrc( 'myAppName', [
     { name: 'name', dflt: 'Jack', desc: 'Name to print', type: 'string' },
-] ).conf;
+], { description: 'This tool solves any problem given' } ).conf;
 
 console.log( `Name: ${conf.name}` );
 ```
