@@ -13,7 +13,7 @@ describe( 'Verifiers', () => {
                 let result : ValidationResult = undefined;
                 expect( () => result = v( k, undefined ) ).not.toThrow();
                 expect( result ).withContext( `${k} = undefined was not parsed` ).toBeDefined();
-                expect( result.value ).withContext( `${k} = undefined was not parsed` ).not.toBeDefined();
+                expect( result.value === undefined || result.value === false ).withContext( `${k} = undefined was not parsed` ).toBeTrue();
             }
         } );
 
