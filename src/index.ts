@@ -1,12 +1,4 @@
-import {
-    ValidationResult,
-    verify2dNumberArray,
-    verifyBoolean,
-    verifyNumber,
-    verifyNumberArray,
-    verifyString,
-    verifyStringArray
-} from './verifiers';
+import { ValidationResult, Verifier, verifiers, } from './verifiers/verifiers';
 
 const chalk = require( 'chalk' );
 const rc = require( 'rc' );
@@ -22,15 +14,15 @@ export interface VrcSettings {
     description? : string;
 }
 
-const verifiers : Map<string, ( key : string, val : string ) => ValidationResult> = new Map();
+const allVerifiers : Map<string, ( key : string, val : string ) => ValidationResult> = new Map();
 
-verifiers.set( 'number', verifyNumber );
-verifiers.set( 'number[]', verifyNumberArray );
-verifiers.set( 'number[][]', verify2dNumberArray );
-verifiers.set( 'string', verifyString );
-verifiers.set( 'string[]', verifyStringArray );
-verifiers.set( 'boolean', verifyBoolean );
-verifiers.set( 'bool', verifyBoolean );
+allVerifiers.set( 'number', verifiers.get( Verifier.number ) );
+allVerifiers.set( 'number[]', verifiers.get( Verifier.numberArray ) );
+allVerifiers.set( 'number[][]', verifiers.get( Verifier.numberArray2D ) );
+allVerifiers.set( 'string', verifiers.get( Verifier.string ) );
+allVerifiers.set( 'string[]', verifiers.get( Verifier.stringArray ) );
+allVerifiers.set( 'boolean', verifiers.get( Verifier.boolean ) );
+allVerifiers.set( 'bool', verifiers.get( Verifier.boolean ) );
 
 
 function checkInvalidNames( conf : any, validArgs : VrcArgument[] ) : Set<string> {
@@ -40,7 +32,7 @@ function checkInvalidNames( conf : any, validArgs : VrcArgument[] ) : Set<string
 
         const [ key, val, type ] = [ el.name, conf[ el.name ], el.type ];
 
-        const verifier = verifiers.get( el.type );
+        const verifier = allVerifiers.get( el.type );
         if ( !verifier ) {
             throw new Error( `Unknown argument type ${type}, no verifier found.` );
         }

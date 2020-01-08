@@ -1,0 +1,12 @@
+import { ValidationResult, VerifierFunction } from './verifiers';
+
+const check = require( 'check-types' );
+
+export const stringArrayVerifier : VerifierFunction = ( key : string, val : any ) : ValidationResult => {
+    const isValid = check.string( val );
+    return {
+        valid: isValid,
+        value: val.split( ',' ),
+        warning: !isValid && `Argument ${key} must be a string of comma-separated strings, is ${JSON.stringify( val )}`,
+    };
+};
