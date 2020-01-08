@@ -66,6 +66,15 @@ export const verifyString = ( key : string, val : any ) : ValidationResult => {
     }
 };
 
+export const verifyStringArray = ( key : string, val : any ) : ValidationResult => {
+    const isValid = check.string( val );
+    return {
+        valid: isValid,
+        value: val.split( ',' ),
+        warning: !isValid && `Argument ${key} must be a string of comma-separated strings, is ${JSON.stringify( val )}`,
+    };
+};
+
 export const verifyBoolean = ( key : string, val : any ) : ValidationResult => {
     const isTrue = val === true || ( check.string( val ) && ( val as string ).toLowerCase() === 'true' );
     const isFalse = val === false || ( check.string( val ) && ( val as string ).toLowerCase() === 'false' );

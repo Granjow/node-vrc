@@ -42,3 +42,10 @@ import { vrc } from 'vrc';
 
 const conf = vrc( … ).conf;
 ```
+
+
+## Changelog
+
+### v1.8.0 (2020-01-08)
+
+* Add support for `string[]`

@@ -1,4 +1,4 @@
-import { verify2dNumberArray, verifyBoolean, verifyNumberArray } from '../src/verifiers';
+import { verify2dNumberArray, verifyBoolean, verifyNumberArray, verifyStringArray } from '../src/verifiers';
 
 describe( 'Verifiers', () => {
 
@@ -96,6 +96,22 @@ describe( 'Verifiers', () => {
             expect( result.valid ).toBe( true );
             expect( result.value ).toEqual( arr );
             expect( result.warning ).not.toBeTruthy();
+        } );
+
+    } );
+
+    describe( 'string array', () => {
+
+        it( 'allows single string', () => {
+            const result = verifyStringArray( 'foo', 'bar' );
+            expect( result.valid ).toBe( true );
+            expect( result.value ).toEqual( [ 'bar' ] );
+        } );
+
+        it( 'splits strings at commas', () => {
+            const result = verifyStringArray( 'foo', 'bar,42,baz' );
+            expect( result.valid ).toBe( true );
+            expect( result.value ).toEqual( [ 'bar', '42', 'baz' ] );
         } );
 
     } );

@@ -4,7 +4,8 @@ import {
     verifyBoolean,
     verifyNumber,
     verifyNumberArray,
-    verifyString
+    verifyString,
+    verifyStringArray
 } from './verifiers';
 
 const chalk = require( 'chalk' );
@@ -27,6 +28,7 @@ verifiers.set( 'number', verifyNumber );
 verifiers.set( 'number[]', verifyNumberArray );
 verifiers.set( 'number[][]', verify2dNumberArray );
 verifiers.set( 'string', verifyString );
+verifiers.set( 'string[]', verifyStringArray );
 verifiers.set( 'boolean', verifyBoolean );
 verifiers.set( 'bool', verifyBoolean );
 
