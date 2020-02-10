@@ -1,4 +1,5 @@
 import { ValidationResult, Verifier, verifiers, } from './verifiers/verifiers';
+import { printHelp } from './help';
 
 const chalk = require( 'chalk' );
 const rc = require( 'rc' );
@@ -94,20 +95,11 @@ export function vrc( appName : string, validArgs : VrcArgument[], settings? : Vr
 
     const conf : any = rc( appName, rcObj );
 
-    const invalidNames = checkInvalidNames( conf, validArgs );
+    const invalidNames : Set<string> = checkInvalidNames( conf, validArgs );
     const exitCode = invalidNames.size > 0 ? 1 : 0;
 
     if ( conf.h || conf.help ) {
-        console.log( `Usage: ${process.argv[ 0 ]} [OPTIONS]\n` );
-        if ( settings && settings.description ) {
-            console.log( settings.description + '\n' );
-        }
-        validArgs.forEach( ( el ) => {
-            const valueColor = invalidNames.has( el.name ) ? chalk.bold.red : chalk.bold.blue;
-            const val = valueColor( conf[ el.name ] );
-            console.log( `${chalk.green( el.name )} : ${el.type} [${el.dflt}] → ${val}\n\t${el.desc}\n` );
-        } );
-        console.log( `Configuration files can be stored in .${appName}rc in this or a parent directory,\nor in another location checked by rc: https://www.npmjs.com/package/rc\n` );
+        printHelp( appName, validArgs, invalidNames, conf, settings );
         process.exit( exitCode );
     }
 

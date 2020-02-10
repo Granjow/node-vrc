@@ -37,6 +37,7 @@
   "dependencies": {
     "chalk": "^2.4.2",
     "check-types": "^8.0.1",
-    "rc": "^1.2.8"
+    "rc": "^1.2.8",
+    "wrap-ansi": "^6.2.0"
   }
 }

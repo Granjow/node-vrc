@@ -46,6 +46,10 @@ const conf = vrc( … ).conf;
 
 ## Changelog
 
-### v1.8.0 (2020-01-08)
+### v1.9.0 – 2020-02-10
+
+* Change: Long description lines are now wrapped in the help output.
+
+### v1.8.0  – 2020-01-08
 
 * Add support for `string[]`
