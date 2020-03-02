@@ -5,8 +5,6 @@ import { stringVerifier } from './string-verifier';
 import { stringArrayVerifier } from './string-array-verifier';
 import { booleanVerifier } from './boolean-verifier';
 
-const check = require( 'check-types' );
-
 export interface ValidationResult {
     valid : boolean,
     value : any,
@@ -14,7 +12,7 @@ export interface ValidationResult {
 }
 
 export interface VerifierFunction {
-    ( key : string, value : any ) : ValidationResult;
+    ( key : string, value : any, options? : string[] ) : ValidationResult;
 }
 
 export enum Verifier {

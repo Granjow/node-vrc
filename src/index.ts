@@ -1,7 +1,6 @@
 import { ValidationResult, Verifier, verifiers, } from './verifiers/verifiers';
 import { printHelp } from './help';
 
-const chalk = require( 'chalk' );
 const rc = require( 'rc' );
 
 export interface VrcArgument {
@@ -9,6 +8,7 @@ export interface VrcArgument {
     type : string;
     desc : string;
     dflt : any;
+    options?:string[];
 }
 
 export interface VrcSettings {
