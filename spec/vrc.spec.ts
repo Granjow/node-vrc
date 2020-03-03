@@ -71,4 +71,36 @@ describe( 'vrc', () => {
         expect( f ).toThrow();
     } );
 
+    describe( 'Default Arguments', () => {
+
+        it( 'uses default string', () => {
+            const conf = vrc( appName, [
+                { name: 'value', type: 'string', dflt: 'foo123', desc: '' },
+            ] ).conf;
+            expect( conf[ 'value' ] ).toEqual( 'foo123' );
+        } );
+
+        it( 'uses default boolean', () => {
+            const conf = vrc( appName, [
+                { name: 'value', type: 'boolean', dflt: false, desc: '' },
+            ] ).conf;
+            expect( conf[ 'value' ] ).toBeFalse();
+        } );
+
+        it( 'uses default boolean (true)', () => {
+            const conf = vrc( appName, [
+                { name: 'value', type: 'boolean', dflt: true, desc: '' },
+            ] ).conf;
+            expect( conf[ 'value' ] ).toBeTrue();
+        } );
+
+        it( 'uses default number', () => {
+            const conf = vrc( appName, [
+                { name: 'value', type: 'number', dflt: 42.5, desc: '' },
+            ] ).conf;
+            expect( conf[ 'value' ] ).toBe( 42.5 );
+        } );
+
+    } );
+
 } );
