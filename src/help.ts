@@ -3,7 +3,7 @@ import chalk from 'chalk';
 
 const wrapAnsi = require( 'wrap-ansi' );
 
-export const printHelp = ( appName : string, validArgs : VrcArgument[], invalidNames : Set<string>, conf : any, settings? : VrcSettings ) => {
+export const createHelpText = ( appName : string, validArgs : VrcArgument[], invalidNames : Set<string>, conf : any, settings? : VrcSettings ) : string => {
 
     console.log( `Usage: ${process.argv[ 0 ]} [OPTIONS]\n` );
 
@@ -40,5 +40,5 @@ export const printHelp = ( appName : string, validArgs : VrcArgument[], invalidN
     lines.push( wrapAnsi( `Configuration files can be stored in .${appName}rc in this or a parent directory, ` +
         'or in another location checked by rc: https://www.npmjs.com/package/rc', 78 ) );
 
-    console.log( lines.join( '\n' ) );
+    return lines.join( '\n' );
 };

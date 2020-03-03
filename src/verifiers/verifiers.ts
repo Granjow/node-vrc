@@ -48,15 +48,18 @@ class Verifiers {
 }
 
 export const verifiers = new Verifiers();
-
 verifiers.registerVerifier( Verifier.number, numberVerifier );
-
 verifiers.registerVerifier( Verifier.numberArray, numberArrayVerifier );
-
 verifiers.registerVerifier( Verifier.numberArray2D, numberArrayArrayVerifier );
-
 verifiers.registerVerifier( Verifier.string, stringVerifier );
-
 verifiers.registerVerifier( Verifier.stringArray, stringArrayVerifier );
-
 verifiers.registerVerifier( Verifier.boolean, booleanVerifier );
+
+export const allVerifiers : Map<string, ( key : string, val : string ) => ValidationResult> = new Map();
+allVerifiers.set( 'number', verifiers.get( Verifier.number ) );
+allVerifiers.set( 'number[]', verifiers.get( Verifier.numberArray ) );
+allVerifiers.set( 'number[][]', verifiers.get( Verifier.numberArray2D ) );
+allVerifiers.set( 'string', verifiers.get( Verifier.string ) );
+allVerifiers.set( 'string[]', verifiers.get( Verifier.stringArray ) );
+allVerifiers.set( 'boolean', verifiers.get( Verifier.boolean ) );
+allVerifiers.set( 'bool', verifiers.get( Verifier.boolean ) );

@@ -101,6 +101,32 @@ describe( 'vrc', () => {
             expect( conf[ 'value' ] ).toBe( 42.5 );
         } );
 
+        it( 'marks value as default value if no value was provided', () => {
+            const conf = vrc( appName, [
+                { name: 'value', type: 'string', dflt: 'foo123', desc: '' },
+            ] );
+            expect( conf.isDefaultValue( 'value' ) ).toBeTrue();
+            expect( conf.get( 'value' ) ).toBe( 'foo123' );
+        } );
+
+        it( 'marks value as default value if invalid value was provided', () => {
+            fs.writeFileSync( configPath, JSON.stringify( { value: 'foo' } ) );
+            const conf = vrc( appName, [
+                { name: 'value', type: 'number', dflt: 123, desc: '' },
+            ] );
+            expect( conf.isDefaultValue( 'value' ) ).toBeTrue();
+            expect( conf.get( 'value' ) ).toBe( 123 );
+        } );
+
+        it( 'does not mark value as default value if user provided value was used', () => {
+            fs.writeFileSync( configPath, JSON.stringify( { value: 789 } ) );
+            const conf = vrc( appName, [
+                { name: 'value', type: 'number', dflt: 123, desc: '' },
+            ] );
+            expect( conf.isDefaultValue( 'value' ) ).toBeFalse();
+            expect( conf.get( 'value' ) ).toBe( 789 );
+        } );
+
     } );
 
 } );

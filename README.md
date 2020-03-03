@@ -8,9 +8,9 @@ const { vrc } = require( 'vrc' );
 
 const conf = vrc( 'myAppName', [
     { name: 'name', dflt: 'Jack', desc: 'Name to print', type: 'string' },
-], { description: 'This tool solves any problem given' } ).conf;
+], { description: 'This tool solves any problem given' } );
 
-console.log( `Name: ${conf.name}` );
+console.log( `Name: ${conf.get('name')}` );
 ```
 
 **Automatic help** shows default values and actually used values.
@@ -46,6 +46,12 @@ const conf = vrc( … ).conf;
 
 
 ## Changelog
+
+### next
+
+* Added: `vrc` now returns a `VrcConf` object which can e.g. check
+  if an argument is using a default value or a user-provided value.
+  The object is backwards compatible and still exhibits the old properties.
 
 ### v1.10.0 – 2020-03-02
 
