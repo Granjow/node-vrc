@@ -47,7 +47,7 @@ const conf = vrc( … ).conf;
 
 ## Changelog
 
-### next
+### v1.11.0 – 2020-03-03
 
 * Added: `vrc` now returns a `VrcConf` object which can e.g. check
   if an argument is using a default value or a user-provided value.
