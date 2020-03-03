@@ -27,7 +27,7 @@ export interface VrcSettings {
  */
 export function vrc( appName : string, validArgs : VrcArgument[], settings? : VrcSettings ) : VrcConf {
 
-    const conf = new VrcConf( appName, validArgs, );
+    const conf = new VrcConf( appName, validArgs, settings );
 
     if ( conf.showHelp ) {
         console.log( conf.help );
