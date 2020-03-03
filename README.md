@@ -4,11 +4,11 @@ This is a configuration loader based on [rc](https://www.npmjs.com/package/rc),
 extended by argument validation and `--help`.
 
 ```js
-const { vrc } = require( 'vrc' );
+const { Vrc } = require( 'vrc' );
 
-const conf = vrc( 'myAppName', [
+const conf = new Vrc( 'myAppName', [
     { name: 'name', dflt: 'Jack', desc: 'Name to print', type: 'string' },
-], { description: 'This tool solves any problem given' } );
+], { description: 'This tool solves any problem given' } ).run();
 
 console.log( `Name: ${conf.get('name')}` );
 ```
@@ -36,16 +36,34 @@ A configuration entry takes the following arguments:
 Number arrays are passed as comma-separated values and are converted; `1,3,42` results in `[1,3,42]`.
 
 
-## Using vrc in TypeScript projects
+## TypeScript usage
+
+Vrc can be used with limited typing support by passing an interface to the constructor.
 
 ```typescript
-import { vrc } from 'vrc';
+import { Vrc } from 'vrc';
 
-const conf = vrc( … ).conf;
+interface Conf {
+    balloons : number;
+    colour : string;
+}
+
+const conf = new Vrc<Conf>( 'balloon', [
+    { name: 'balloons', type: 'number', dflt: 99, desc: 'Number of balloons' },
+    { name: 'colour', type: 'string', dflt: 'red', desc: 'Balloon colour' },
+] ).run();
+
+console.log( conf.conf.balloons ); // 99
 ```
 
 
 ## Changelog
+
+### v2.0.0 – 2020-03-03
+
+* Breaking: Configuration is now created with `new Vrc()` which can be typed in TypeScript.
+* Breaking: To evaluate the help parameter, use `new Vrc().run()`.
+* Removed: `VrcConf.invalidNames`
 
 ### v1.11.0 – 2020-03-03
 

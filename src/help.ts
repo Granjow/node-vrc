@@ -1,5 +1,6 @@
-import { VrcArgument, VrcSettings } from './index';
 import chalk from 'chalk';
+import { VrcArgument } from './vrc-argument';
+import { VrcSettings } from './vrc-conf';
 
 const wrapAnsi = require( 'wrap-ansi' );
 

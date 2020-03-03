@@ -1,5 +1,5 @@
 const fs = require( 'fs' );
-const { vrc } = require( '../dist/src/index' );
+const { Vrc } = require( '../dist/src/index' );
 
 describe( 'vrc', () => {
 
@@ -16,7 +16,7 @@ describe( 'vrc', () => {
 
         fs.writeFileSync( configPath, JSON.stringify( { name: name, test: 'foo' } ) );
 
-        const conf = vrc( appName, [
+        const conf = new Vrc( appName, [
             { name: 'name', dflt: 'Unset', desc: 'Name to print', type: 'string' },
         ] ).conf;
 

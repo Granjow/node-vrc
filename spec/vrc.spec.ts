@@ -1,5 +1,5 @@
 import * as fs from 'fs';
-import { vrc } from '../src';
+import { Vrc } from '../src';
 
 describe( 'vrc', () => {
 
@@ -19,7 +19,7 @@ describe( 'vrc', () => {
 
         fs.writeFileSync( configPath, JSON.stringify( { name: name, test: 'foo' } ) );
 
-        const conf = vrc( appName, [
+        const conf = new Vrc( appName, [
             { name: 'name', dflt: 'Unset', desc: 'Name to print', type: 'string' },
         ] ).conf;
 
@@ -31,7 +31,7 @@ describe( 'vrc', () => {
 
         fs.writeFileSync( configPath, JSON.stringify( { value: 'noNumber', test: 'foo' } ) );
 
-        const conf = vrc( appName, [
+        const conf = new Vrc( appName, [
             { name: 'value', dflt: 1, desc: 'Foo', type: 'number' },
         ] ).conf;
 
@@ -43,7 +43,7 @@ describe( 'vrc', () => {
 
         fs.writeFileSync( configPath, JSON.stringify( { value: '1,2,3,4,42' } ) );
 
-        const conf = vrc( appName, [
+        const conf = new Vrc( appName, [
             { name: 'value', dflt: [ 1, 9, 11 ], desc: 'Foo', type: 'number[]' },
         ] ).conf;
 
@@ -55,7 +55,7 @@ describe( 'vrc', () => {
 
         fs.writeFileSync( configPath, JSON.stringify( { value: '[[1,2],[3]]' } ) );
 
-        const conf = vrc( appName, [
+        const conf = new Vrc( appName, [
             { name: 'value', dflt: [ 1, 9, 11 ], desc: 'Foo', type: 'number[][]' },
         ] ).conf;
 
@@ -64,7 +64,7 @@ describe( 'vrc', () => {
     } );
 
     it( 'throws an error when the same key is defined twice', () => {
-        const f = () => vrc( appName, [
+        const f = () => new Vrc( appName, [
             { name: 'value', dflt: false, desc: 'Foo', type: 'boolean' },
             { name: 'value', dflt: false, desc: 'Foo', type: 'boolean' },
         ] );
@@ -74,35 +74,35 @@ describe( 'vrc', () => {
     describe( 'Default Arguments', () => {
 
         it( 'uses default string', () => {
-            const conf = vrc( appName, [
+            const conf = new Vrc( appName, [
                 { name: 'value', type: 'string', dflt: 'foo123', desc: '' },
             ] ).conf;
             expect( conf[ 'value' ] ).toEqual( 'foo123' );
         } );
 
         it( 'uses default boolean', () => {
-            const conf = vrc( appName, [
+            const conf = new Vrc( appName, [
                 { name: 'value', type: 'boolean', dflt: false, desc: '' },
             ] ).conf;
             expect( conf[ 'value' ] ).toBeFalse();
         } );
 
         it( 'uses default boolean (true)', () => {
-            const conf = vrc( appName, [
+            const conf = new Vrc( appName, [
                 { name: 'value', type: 'boolean', dflt: true, desc: '' },
             ] ).conf;
             expect( conf[ 'value' ] ).toBeTrue();
         } );
 
         it( 'uses default number', () => {
-            const conf = vrc( appName, [
+            const conf = new Vrc( appName, [
                 { name: 'value', type: 'number', dflt: 42.5, desc: '' },
             ] ).conf;
             expect( conf[ 'value' ] ).toBe( 42.5 );
         } );
 
         it( 'marks value as default value if no value was provided', () => {
-            const conf = vrc( appName, [
+            const conf = new Vrc( appName, [
                 { name: 'value', type: 'string', dflt: 'foo123', desc: '' },
             ] );
             expect( conf.isDefaultValue( 'value' ) ).toBeTrue();
@@ -111,7 +111,7 @@ describe( 'vrc', () => {
 
         it( 'marks value as default value if invalid value was provided', () => {
             fs.writeFileSync( configPath, JSON.stringify( { value: 'foo' } ) );
-            const conf = vrc( appName, [
+            const conf = new Vrc( appName, [
                 { name: 'value', type: 'number', dflt: 123, desc: '' },
             ] );
             expect( conf.isDefaultValue( 'value' ) ).toBeTrue();
@@ -120,7 +120,7 @@ describe( 'vrc', () => {
 
         it( 'does not mark value as default value if user provided value was used', () => {
             fs.writeFileSync( configPath, JSON.stringify( { value: 789 } ) );
-            const conf = vrc( appName, [
+            const conf = new Vrc( appName, [
                 { name: 'value', type: 'number', dflt: 123, desc: '' },
             ] );
             expect( conf.isDefaultValue( 'value' ) ).toBeFalse();

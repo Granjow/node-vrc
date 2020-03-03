@@ -1,10 +1,18 @@
-import { VrcArgument, VrcSettings } from './index';
 import { createHelpText } from './help';
 import { allVerifiers } from './verifiers/verifiers';
+import { VrcArgument } from './vrc-argument';
 
 const rc = require( 'rc' );
 
-export class VrcConf {
+export interface KV {
+    [ index : string ] : any;
+}
+
+export interface VrcSettings {
+    description? : string;
+}
+
+export class VrcConf<T extends KV> {
 
     constructor( appName : string, validArgs : VrcArgument[], settings? : VrcSettings ) {
 
@@ -18,6 +26,19 @@ export class VrcConf {
         this._conf = rc( appName, {} );
         this.validateArguments();
         this.loadDefaultValues();
+    }
+
+    /**
+     * This function shows the help and exits, if -h or --help was specified.
+     */
+    run() : VrcConf<T> {
+        if ( this.showHelp ) {
+            console.log( this.help );
+
+            const exitCode = this.invalidKeys.length > 0 ? 1 : 0;
+            process.exit( exitCode );
+        }
+        return this;
     }
 
     /**
@@ -43,13 +64,6 @@ export class VrcConf {
     }
 
     /**
-     * @deprecated This function will be removed in future. Use #invalidKeys instead.
-     */
-    get invalidNames() : string[] {
-        return this.invalidKeys;
-    }
-
-    /**
      * @returns The help text which can be printed on the console.
      */
     get help() : string {
@@ -64,7 +78,7 @@ export class VrcConf {
      * @returns The configuration object with all keys and values.
      * Default values are used if no value was provided or if the provided value was invalid.
      */
-    get conf() : any {
+    get conf() : T {
         return this._conf;
     }
 
@@ -75,7 +89,7 @@ export class VrcConf {
             const invalid = !this.isValid( el.name );
 
             if ( noValueProvided || invalid ) {
-                this._conf[ el.name ] = el.dflt;
+                (this._conf as any)[ el.name ] = el.dflt;
                 this._defaultValues.push( el.name );
             }
         }
@@ -94,7 +108,7 @@ export class VrcConf {
             const validationResult = verifier( key, val );
 
             if ( validationResult.valid ) {
-                this._conf[ el.name ] = validationResult.value;
+                (this._conf as any)[ el.name ] = validationResult.value;
             } else {
                 this._invalidKeys.add( key );
             }
@@ -121,5 +135,5 @@ export class VrcConf {
     private readonly _defaultValues : string[] = [];
     private readonly _invalidKeys : Set<string> = new Set();
     private readonly _validArgs : VrcArgument[];
-    private readonly _conf : any;
+    private readonly _conf : T;
 }
