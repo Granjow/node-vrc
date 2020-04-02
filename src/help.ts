@@ -39,7 +39,9 @@ export const createHelpText = ( appName : string, validArgs : VrcArgument[], inv
 
     lines.push( '' );
     lines.push( wrapAnsi( `Configuration files can be stored in .${appName}rc in this or a parent directory, ` +
-        'or in another location checked by rc: https://www.npmjs.com/package/rc', 78 ) );
+        'or in another location checked by rc: https://www.npmjs.com/package/rc ' +
+        'Alternatively, define arguments in environment variables, for example an argument “foo” ' +
+        `is set by the environment variable ”${appName}_foo“.`, 78 ) );
 
     return lines.join( '\n' );
 };
