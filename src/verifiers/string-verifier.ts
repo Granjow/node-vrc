@@ -18,6 +18,7 @@ export const stringVerifier : VerifierFunction = ( key : string, val : any, opti
     return {
         valid: isValid,
         value: val,
-        warning: warning
+        warning: warning,
+        canUseDefaultFallback: val === undefined,
     }
 };

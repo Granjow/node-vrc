@@ -8,5 +8,6 @@ export const numberVerifier : VerifierFunction = ( key : string, val : any ) : V
         valid: isValid,
         value: val,
         warning: !isValid && `Argument ${key} must be a number, is ${JSON.stringify( val )}`,
+        canUseDefaultFallback: val === undefined,
     }
 };

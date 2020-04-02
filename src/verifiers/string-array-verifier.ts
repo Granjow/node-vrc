@@ -8,5 +8,6 @@ export const stringArrayVerifier : VerifierFunction = ( key : string, val : any 
         valid: isValid,
         value: isValid ? val.split( ',' ) : val,
         warning: !isValid && `Argument ${key} must be a string of comma-separated strings, is ${JSON.stringify( val )}`,
+        canUseDefaultFallback: val === undefined,
     };
 };
