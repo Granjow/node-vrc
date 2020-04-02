@@ -1,12 +1,12 @@
-import { createHelpText } from './help';
-import { allVerifiers, ValidationResult } from './verifiers/verifiers';
+import { createHelpText, printArgs } from './help';
+import { allVerifiers } from './verifiers/verifiers';
 import { VrcArgument } from './args/vrc-argument';
 import { ProcessedArgument } from './args/processed-argument';
 
 const rc = require( 'rc' );
 
 export interface KV {
-    [ index : string ] : string | string[] | number | number[] | number[][] | boolean;
+    [ index : string ] : any;
 }
 
 export interface VrcSettings {
@@ -31,10 +31,18 @@ export class VrcConf<T extends KV> {
             this._processedArgs.set( arg.name, new ProcessedArgument( arg ) );
         }
 
-        this._conf = rc( appName, {} );
+        this._rawConf = rc( appName, {} );
+        this._unnamedArgs = this._rawConf._ as any[];
+
         this.validateArguments();
         this.loadDefaultValues();
-        this._unnamedArgs = this._conf._ as any[];
+
+        this._assembledConf = {} as T;
+        for ( let [ k, v ] of this._processedArgs ) {
+            if ( v.isValid ) {
+                ( this._assembledConf as any )[ k ] = v.value;
+            }
+        }
     }
 
     /**
@@ -54,7 +62,7 @@ export class VrcConf<T extends KV> {
      * @return Value of the given key. See #conf
      */
     get( key : string ) : any {
-        return this._conf[ key ];
+        return this._assembledConf[ key ];
     }
 
     /**
@@ -82,11 +90,11 @@ export class VrcConf<T extends KV> {
      * @returns The help text which can be printed on the console.
      */
     get help() : string {
-        return createHelpText( this._appName, this._validArgs, this._invalidKeys, this._conf, this._settings );
+        return createHelpText( this._appName, Array.from( this._processedArgs.values() ), this._settings );
     }
 
     get showHelp() : boolean {
-        return ( this._conf as any )[ 'h' ] || ( this._conf as any )[ 'help' ];
+        return ( this._rawConf as any )[ 'h' ] || ( this._rawConf as any )[ 'help' ];
     }
 
     /**
@@ -94,19 +102,23 @@ export class VrcConf<T extends KV> {
      * Default values are used if no value was provided or if the provided value was invalid.
      */
     get conf() : T {
-        return this._conf;
+        return this._assembledConf;
+    }
+
+    printArgs() : void {
+        console.log( printArgs( Array.from( this._processedArgs.values() ) ) );
     }
 
     private loadDefaultValues() {
         for ( let arg of this._processedArgs.values() ) {
 
             const el = arg.vrcArgument;
-            const noValueProvided = this._conf[ el.name ] === undefined && el.dflt !== undefined;
-            const invalid = !this.isValid( el.name );
+            const defaultValueAvailable = el.dflt !== undefined;
+            const noValueProvided = arg.value === undefined;
+            const canUseDefaultFallback = arg.validationResult.canUseDefaultFallback;
 
-            if ( noValueProvided || invalid ) {
+            if ( ( noValueProvided && defaultValueAvailable ) || ( canUseDefaultFallback && defaultValueAvailable ) ) {
                 arg.setDefaultValue( el.dflt );
-                ( this._conf as any )[ el.name ] = el.dflt;
             }
         }
     }
@@ -115,21 +127,14 @@ export class VrcConf<T extends KV> {
         for ( let el of this._processedArgs.values() ) {
 
             const [ key, type ] = [ el.vrcArgument.name, el.vrcArgument.type ];
-            const val = this._conf[ key ];
+            const val = this._rawConf[ key ];
 
             const verifier = allVerifiers.get( type );
             if ( !verifier ) {
                 throw new Error( `Unknown argument type ${type}, no verifier found.` );
             }
 
-            const validationResult : ValidationResult = verifier( key, val as any );
-
-            el.validationResult = validationResult;
-            if ( validationResult.valid ) {
-                ( this._conf as any )[ key ] = validationResult.value;
-            } else {
-                this._invalidKeys.add( key );
-            }
+            el.validationResult = verifier( key, val as any );
         }
     }
 
@@ -150,9 +155,10 @@ export class VrcConf<T extends KV> {
 
     private readonly _settings : VrcSettings;
     private readonly _appName : string;
-    private readonly _invalidKeys : Set<string> = new Set();
     private readonly _validArgs : VrcArgument[];
     private readonly _unnamedArgs : any[] = [];
     private readonly _processedArgs : Map<string, ProcessedArgument> = new Map();
-    private readonly _conf : T;
+    private readonly _rawConf : any;
+
+    private readonly _assembledConf : T;
 }

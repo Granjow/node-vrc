@@ -10,5 +10,6 @@ export const booleanVerifier : VerifierFunction = ( key : string, val : any ) : 
         valid: isValid,
         value: isTrue ? true : false,
         warning: !isValid && `Argument ${key} must be a boolean, is ${JSON.stringify( val )}`,
+        canUseDefaultFallback: val === undefined,
     }
 };

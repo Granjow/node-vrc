@@ -61,7 +61,13 @@ console.log( conf.conf.balloons ); // 99
 
 ### Upcoming
 
+This version fixes the way arguments are marked as invalid and does not replace invalid user arguments
+by default values anymore as this is potentially dangerous.
+
 * Added `VrcConf.unnamedArgs` which contains positional/unnamed arguments
+* Added `VrcConf.printArgs()` to print a summary of all arguments
+* Added the `secr` modifier for arguments which causes them not to be printed with the above function
+* **Breaking:** Invalid arguments are not replaced by default values anymore.
 
 ### v2.0.0 – 2020-03-03
 

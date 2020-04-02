@@ -1,10 +1,10 @@
 import chalk from 'chalk';
-import { VrcArgument } from './args/vrc-argument';
 import { VrcSettings } from './vrc-conf';
+import { ProcessedArgument } from './args/processed-argument';
 
 const wrapAnsi = require( 'wrap-ansi' );
 
-export const createHelpText = ( appName : string, validArgs : VrcArgument[], invalidNames : Set<string>, conf : any, settings? : VrcSettings ) : string => {
+export const createHelpText = ( appName : string, processedArgs : ProcessedArgument[], settings? : VrcSettings ) : string => {
 
     console.log( `Usage: ${process.argv[ 0 ]} [OPTIONS]\n` );
 
@@ -18,9 +18,10 @@ export const createHelpText = ( appName : string, validArgs : VrcArgument[], inv
     const indent : string = '    ';
     const lines : string[] = [];
 
-    validArgs.forEach( ( el ) => {
-        const valueColor = invalidNames.has( el.name ) ? colInvalid : colValid;
-        const val = valueColor( conf[ el.name ] );
+    processedArgs.forEach( ( arg ) => {
+        const el = arg.vrcArgument;
+        const valueColor = arg.isValid ? colValid : colInvalid;
+        const val = valueColor( arg.value );
 
         lines.push( `${chalk.green( el.name )} : ${el.type} (default: ${el.dflt}) → ${val}` );
 
@@ -44,4 +45,23 @@ export const createHelpText = ( appName : string, validArgs : VrcArgument[], inv
         `is set by the environment variable ”${appName}_foo“.`, 78 ) );
 
     return lines.join( '\n' );
+};
+
+export const printArgs = ( args : ProcessedArgument[] ) : string => {
+    const strings = [];
+
+    const fmt = ( arg : ProcessedArgument ) => {
+        const base = arg.vrcArgument.secr ? chalk.italic : chalk;
+        if ( !arg.isValid ) return base.red;
+        if ( arg.isUserDefined ) return base.green;
+        return base.white;
+    };
+
+    for ( let arg of args ) {
+        const f = fmt( arg );
+        const v = arg.vrcArgument.secr ? '[********]' : arg.value;
+        strings.push( `${arg.vrcArgument.name} = ${f( v )}` );
+    }
+
+    return strings.join( '\n' );
 };

@@ -36,9 +36,10 @@ describe( 'vrc', () => {
 
         const conf = new Vrc( appName, [
             { name: 'value', dflt: 1, desc: 'Foo', type: 'number' },
-        ] ).conf;
+        ] );
 
-        expect( conf[ 'value' ] ).toBe( 1 );
+        expect( conf.conf[ 'value' ] ).not.toBeDefined();
+        expect( conf.invalidKeys.includes( 'value' ) );
 
     } );
 
@@ -112,13 +113,13 @@ describe( 'vrc', () => {
             expect( conf.get( 'value' ) ).toBe( 'foo123' );
         } );
 
-        it( 'marks value as default value if invalid value was provided', () => {
+        it( 'does not mark value as default value if invalid value was provided', () => {
             fs.writeFileSync( configPath, JSON.stringify( { value: 'foo' } ) );
             const conf = new Vrc( appName, [
                 { name: 'value', type: 'number', dflt: 123, desc: '' },
             ] );
-            expect( conf.isDefaultValue( 'value' ) ).toBeTrue();
-            expect( conf.get( 'value' ) ).toBe( 123 );
+            expect( conf.isDefaultValue( 'value' ) ).toBeFalse();
+            expect( conf.get( 'value' ) ).not.toBeDefined();
         } );
 
         it( 'does not mark value as default value if user provided value was used', () => {
@@ -145,6 +146,25 @@ describe( 'vrc', () => {
     describe( 'Invalid keys', () => {
 
         it( 'marks invalid user args as invalid', () => {
+
+            setArgs( [ '--foo', 'a', '--bar', '9', '--baz', '4' ] );
+            const conf = new VrcConf( 'foo', [
+                { name: 'foo', type: 'number', dflt: undefined, desc: '' },
+                { name: 'bar', type: 'number', dflt: undefined, desc: '' },
+                { name: 'baz', type: 'bool', dflt: undefined, desc: '' },
+            ] );
+            expect( conf.invalidKeys ).toEqual( [ 'foo', 'baz' ] );
+        } );
+
+        it( 'does not provide a value for invalid keys', () => {
+            setArgs( [ '--foo', 'a', '--bar', '9', '--baz', '4' ] );
+            const conf = new VrcConf( 'foo', [
+                { name: 'foo', type: 'number', dflt: undefined, desc: '' },
+            ] );
+            expect( conf.conf.foo ).not.toBeDefined();
+        } );
+
+        it( 'marks invalid user args as invalid when defaults are available', () => {
 
             setArgs( [ '--foo', 'a', '--bar', '9', '--baz', '4' ] );
             const conf = new VrcConf( 'foo', [

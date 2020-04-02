@@ -18,7 +18,10 @@ const conf = new Vrc<Conf>( 'test', [
         desc: 'This is quite a long description which should be wrapped nicely. Otherwise, the line is very hard to read and does not look nice anymore.\n\nThis is a new paragraph.',
     },
     { name: 'type', type: 'string', dflt: undefined, desc: 'With options', options: [ 'a', 'b' ] },
-], { description: 'Smart World instead of Smart Home – controls daylight!' } ).run();
+    { name: 'secret', type: 'string', dflt: undefined, desc: 'With options', secr: true },
+], { description: 'Smart World instead of Smart Home – controls daylight!' } );
 
-console.log( util.inspect( conf, false, null, true ) );
+conf.printArgs();
+
+//console.log( util.inspect( conf, false, null, true ) );
 console.log( `Name: ${conf.conf.name}. Daylight: ${conf.conf.daylight}.` );

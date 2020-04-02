@@ -6,9 +6,10 @@ import { stringArrayVerifier } from './string-array-verifier';
 import { booleanVerifier } from './boolean-verifier';
 
 export interface ValidationResult {
-    valid : boolean,
-    value : any,
-    warning : string,
+    valid : boolean;
+    value : any;
+    warning : string;
+    canUseDefaultFallback : boolean;
 }
 
 export interface VerifierFunction {
