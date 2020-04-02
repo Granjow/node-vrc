@@ -1,11 +1,12 @@
 import { createHelpText } from './help';
-import { allVerifiers } from './verifiers/verifiers';
-import { VrcArgument } from './vrc-argument';
+import { allVerifiers, ValidationResult } from './verifiers/verifiers';
+import { VrcArgument } from './args/vrc-argument';
+import { ProcessedArgument } from './args/processed-argument';
 
 const rc = require( 'rc' );
 
 export interface KV {
-    [ index : string ] : any;
+    [ index : string ] : string | string[] | number | number[] | number[][] | boolean;
 }
 
 export interface VrcSettings {
@@ -13,6 +14,9 @@ export interface VrcSettings {
 }
 
 export class VrcConf<T extends KV> {
+
+    // TODO print all arguments
+    // TODO mark arguments as secrets (do not print)
 
     constructor( appName : string, validArgs : VrcArgument[], settings? : VrcSettings ) {
 
@@ -23,9 +27,14 @@ export class VrcConf<T extends KV> {
         const duplicates = this.getDuplicateKeys( validArgs );
         if ( duplicates.length > 0 ) throw new Error( `Duplicate definitions for: ${duplicates.join( ',' )}` );
 
+        for ( let arg of this._validArgs ) {
+            this._processedArgs.set( arg.name, new ProcessedArgument( arg ) );
+        }
+
         this._conf = rc( appName, {} );
         this.validateArguments();
         this.loadDefaultValues();
+        this._unnamedArgs = this._conf._ as any[];
     }
 
     /**
@@ -52,15 +61,21 @@ export class VrcConf<T extends KV> {
      * @returns `true`, if the default value was used.
      */
     isDefaultValue( key : string ) : boolean {
-        return this._defaultValues.includes( key );
+        return !this._processedArgs.get( key ).isUserDefined;
     }
 
     isValid( key : string ) : boolean {
-        return !this._invalidKeys.has( key );
+        return this._processedArgs.get( key ).isValid;
+    }
+
+    get unnamedArgs() : any[] {
+        return this._unnamedArgs;
     }
 
     get invalidKeys() : string[] {
-        return Array.from( this._invalidKeys );
+        return Array.from( this._processedArgs.values() )
+            .filter( ( el ) => !el.isValid )
+            .map( ( el ) => el.vrcArgument.name );
     }
 
     /**
@@ -71,7 +86,7 @@ export class VrcConf<T extends KV> {
     }
 
     get showHelp() : boolean {
-        return this._conf[ 'h' ] || this._conf[ 'help' ];
+        return ( this._conf as any )[ 'h' ] || ( this._conf as any )[ 'help' ];
     }
 
     /**
@@ -83,32 +98,35 @@ export class VrcConf<T extends KV> {
     }
 
     private loadDefaultValues() {
-        for ( let el of this._validArgs ) {
+        for ( let arg of this._processedArgs.values() ) {
 
+            const el = arg.vrcArgument;
             const noValueProvided = this._conf[ el.name ] === undefined && el.dflt !== undefined;
             const invalid = !this.isValid( el.name );
 
             if ( noValueProvided || invalid ) {
-                (this._conf as any)[ el.name ] = el.dflt;
-                this._defaultValues.push( el.name );
+                arg.setDefaultValue( el.dflt );
+                ( this._conf as any )[ el.name ] = el.dflt;
             }
         }
     }
 
     private validateArguments() {
-        for ( let el of this._validArgs ) {
+        for ( let el of this._processedArgs.values() ) {
 
-            const [ key, val, type ] = [ el.name, this._conf[ el.name ], el.type ];
+            const [ key, type ] = [ el.vrcArgument.name, el.vrcArgument.type ];
+            const val = this._conf[ key ];
 
-            const verifier = allVerifiers.get( el.type );
+            const verifier = allVerifiers.get( type );
             if ( !verifier ) {
                 throw new Error( `Unknown argument type ${type}, no verifier found.` );
             }
 
-            const validationResult = verifier( key, val );
+            const validationResult : ValidationResult = verifier( key, val as any );
 
+            el.validationResult = validationResult;
             if ( validationResult.valid ) {
-                (this._conf as any)[ el.name ] = validationResult.value;
+                ( this._conf as any )[ key ] = validationResult.value;
             } else {
                 this._invalidKeys.add( key );
             }
@@ -132,8 +150,9 @@ export class VrcConf<T extends KV> {
 
     private readonly _settings : VrcSettings;
     private readonly _appName : string;
-    private readonly _defaultValues : string[] = [];
     private readonly _invalidKeys : Set<string> = new Set();
     private readonly _validArgs : VrcArgument[];
+    private readonly _unnamedArgs : any[] = [];
+    private readonly _processedArgs : Map<string, ProcessedArgument> = new Map();
     private readonly _conf : T;
 }

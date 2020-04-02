@@ -59,6 +59,10 @@ console.log( conf.conf.balloons ); // 99
 
 ## Changelog
 
+### Upcoming
+
+* Added `VrcConf.unnamedArgs` which contains positional/unnamed arguments
+
 ### v2.0.0 – 2020-03-03
 
 * Breaking: Configuration is now created with `new Vrc()` which can be typed in TypeScript.

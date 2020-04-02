@@ -1,7 +1,10 @@
 import * as fs from 'fs';
 import { Vrc } from '../src';
+import { VrcConf } from '../src/vrc-conf';
 
 describe( 'vrc', () => {
+
+    const setArgs = ( args : string[] ) => process.argv = [ 'x', 'y' ].concat( ...args );
 
     const appName = 'testapp';
     const configPath = `./.${appName}rc`;
@@ -125,6 +128,31 @@ describe( 'vrc', () => {
             ] );
             expect( conf.isDefaultValue( 'value' ) ).toBeFalse();
             expect( conf.get( 'value' ) ).toBe( 789 );
+        } );
+
+    } );
+
+    describe( 'Unnamed args', () => {
+
+        it( 'provides unnamed args', () => {
+            setArgs( [ 'a', 'b' ] );
+            const conf = new VrcConf( 'foo', [] );
+            expect( conf.unnamedArgs ).toEqual( [ 'a', 'b' ] );
+        } );
+
+    } );
+
+    describe( 'Invalid keys', () => {
+
+        it( 'marks invalid user args as invalid', () => {
+
+            setArgs( [ '--foo', 'a', '--bar', '9', '--baz', '4' ] );
+            const conf = new VrcConf( 'foo', [
+                { name: 'foo', type: 'number', dflt: 0, desc: '' },
+                { name: 'bar', type: 'number', dflt: 0, desc: '' },
+                { name: 'baz', type: 'bool', dflt: false, desc: '' },
+            ] );
+            expect( conf.invalidKeys ).toEqual( [ 'foo', 'baz' ] );
         } );
 
     } );
