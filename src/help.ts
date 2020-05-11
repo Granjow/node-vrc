@@ -21,7 +21,8 @@ export const createHelpText = ( appName : string, processedArgs : ProcessedArgum
     processedArgs.forEach( ( arg ) => {
         const el = arg.vrcArgument;
         const valueColor = arg.isValid ? colValid : colInvalid;
-        const val = valueColor( arg.value );
+        const isUserProvidedSecret = el.secr && arg.isUserDefined;
+        const val = valueColor( isUserProvidedSecret ? '[********]' : arg.value );
 
         lines.push( `${chalk.green( el.name )} : ${el.type} (default: ${el.dflt}) → ${val}` );
 
