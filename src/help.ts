@@ -9,7 +9,7 @@ export const createHelpText = ( appName : string, processedArgs : ProcessedArgum
     console.log( `Usage: ${process.argv[ 0 ]} [OPTIONS]\n` );
 
     if ( settings && settings.description ) {
-        console.log( settings.description + '\n' );
+        console.log( wrapAnsi( settings.description, 78 ) + '\n' );
     }
 
     const colInvalid = chalk.bold.red;

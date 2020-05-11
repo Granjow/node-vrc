@@ -59,6 +59,11 @@ console.log( conf.conf.balloons ); // 99
 
 ## Changelog
 
+
+### v2.1.1 – 2020-05-11
+
+* Changed help output to redact user-provided secrets
+
 ### v2.1.0 – 2020-04-02
 
 This version fixes the way arguments are marked as invalid and does not replace invalid user arguments
