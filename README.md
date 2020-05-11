@@ -60,9 +60,18 @@ console.log( conf.conf.balloons ); // 99
 ## Changelog
 
 
-### v2.1.1 – 2020-05-11
+### v2.1.3 – 2020-05-11
+
+* Update dependencies and correct changelog
+
+
+### v2.1.2 – 2020-05-11
 
 * Changed help output to redact user-provided secrets
+
+### v2.1.1 – 2020-04-03
+
+* Update minimist dependency to fix audit issue
 
 ### v2.1.0 – 2020-04-02
 
