@@ -7,6 +7,10 @@ export const stringVerifier : VerifierFunction = ( key : string, val : any, opti
     let isValid = true;
     let warning = undefined;
 
+    if ( check.number( val ) ) {
+        // Convert number to string
+        val = val.toString();
+    }
     if ( !check.string( val ) ) {
         isValid = false;
         warning = `Argument ${key} must be a string, is ${JSON.stringify( val )}`;
@@ -16,9 +20,9 @@ export const stringVerifier : VerifierFunction = ( key : string, val : any, opti
     }
 
     return {
-        valid: isValid,
-        value: val,
-        warning: warning,
-        canUseDefaultFallback: val === undefined,
+        valid : isValid,
+        value : val,
+        warning : warning,
+        canUseDefaultFallback : val === undefined,
     }
 };

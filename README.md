@@ -60,6 +60,11 @@ console.log( conf.conf.balloons ); // 99
 ## Changelog
 
 
+### v2.2.0 – 2020-06-27
+
+* Convert Numbers to string for string parameters
+
+
 ### v2.1.3 – 2020-05-11
 
 * Update dependencies and correct changelog

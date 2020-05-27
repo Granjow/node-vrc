@@ -2,6 +2,12 @@ import { stringVerifier } from '../src/verifiers/string-verifier';
 
 describe( 'String Verifier', () => {
 
+    it( 'converts numbers to string', () => {
+        const result = stringVerifier( 'key', 1.23 );
+        expect( result.valid ).toBeTrue();
+        expect( result.value ).toBe( '1.23' );
+    } );
+
     it( 'verifies a standard string', () => {
         const result = stringVerifier( 'key', 'foo' );
         expect( result.valid ).toBeTrue();
