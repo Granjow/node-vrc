@@ -8,7 +8,7 @@ import { booleanVerifier } from './boolean-verifier';
 export interface ValidationResult {
     valid : boolean;
     value : any;
-    warning : string;
+    warning : string | undefined;
     canUseDefaultFallback : boolean;
 }
 
@@ -36,8 +36,9 @@ class Verifiers {
     }
 
     get( name : Verifier ) : VerifierFunction {
-        if ( !this._verifiers.has( name ) ) throw new Error( `Verifier ${name} not found.` );
-        return this._verifiers.get( name );
+        const verifier = this._verifiers.get( name );
+        if ( !verifier ) throw new Error( `Verifier ${name} not found.` );
+        return verifier;
     }
 
     get verifiers() : Map<string, VerifierFunction> {

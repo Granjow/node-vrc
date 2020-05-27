@@ -69,11 +69,11 @@ export class VrcConf<T extends KV> {
      * @returns `true`, if the default value was used.
      */
     isDefaultValue( key : string ) : boolean {
-        return !this._processedArgs.get( key ).isUserDefined;
+        return !this._processedArgs.get( key )?.isUserDefined ?? false;
     }
 
     isValid( key : string ) : boolean {
-        return this._processedArgs.get( key ).isValid;
+        return this._processedArgs.get( key )?.isValid ?? false;
     }
 
     get unnamedArgs() : any[] {
@@ -115,7 +115,7 @@ export class VrcConf<T extends KV> {
             const el = arg.vrcArgument;
             const defaultValueAvailable = el.dflt !== undefined;
             const noValueProvided = arg.value === undefined;
-            const canUseDefaultFallback = arg.validationResult.canUseDefaultFallback;
+            const canUseDefaultFallback = arg.validationResult?.canUseDefaultFallback ?? false;
 
             if ( ( noValueProvided && defaultValueAvailable ) || ( canUseDefaultFallback && defaultValueAvailable ) ) {
                 arg.setDefaultValue( el.dflt );

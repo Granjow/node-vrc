@@ -18,7 +18,7 @@ export const numberArrayVerifier : VerifierFunction = ( key : string, val : any 
     return {
         valid,
         value: numbers,
-        warning: !valid && `Argument ${key} must be a comma-separated list of numbers, is ${JSON.stringify( val )}`,
+        warning: !valid ? `Argument ${key} must be a comma-separated list of numbers, is ${JSON.stringify( val )}` : undefined,
         canUseDefaultFallback: val === undefined,
     };
 };

@@ -20,7 +20,7 @@ export const numberArrayArrayVerifier = ( key : string, val : any ) : Validation
     return {
         valid,
         value: val,
-        warning: !valid && `Argument ${key} must be a 2D array in JSON format (e.g. [[1,2],[3]]), is ${JSON.stringify( val )}`,
+        warning: !valid ? `Argument ${key} must be a 2D array in JSON format (e.g. [[1,2],[3]]), is ${JSON.stringify( val )}` : undefined,
         canUseDefaultFallback: val === undefined,
     };
 };

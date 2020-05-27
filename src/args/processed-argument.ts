@@ -11,20 +11,20 @@ export class ProcessedArgument {
     }
 
     get isValid() : boolean {
-        return this.isUserDefined ? ( this.validationResult && this.validationResult.valid ) : this._isDefaultValue;
+        return this.isUserDefined ? ( this.validationResult?.valid ?? false ) : this._isDefaultValue;
     }
 
     get isUserDefined() : boolean {
         return this._isUserDefined;
     }
 
-    get validationResult() : ValidationResult {
+    get validationResult() : ValidationResult | undefined {
         return this._validationResult;
     }
 
-    set validationResult( result : ValidationResult ) {
+    set validationResult( result : ValidationResult | undefined ) {
         this._validationResult = result;
-        this._value = result.value;
+        this._value = result?.value;
         this._isUserDefined = true;
         this._isDefaultValue = false;
     }
@@ -38,6 +38,6 @@ export class ProcessedArgument {
     private _value : any;
     private _isUserDefined : boolean = false;
     private _isDefaultValue : boolean = false;
-    private _validationResult : ValidationResult;
+    private _validationResult : ValidationResult | undefined;
 
 }
