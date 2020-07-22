@@ -25,12 +25,19 @@ export class VrcConf<T extends KV> {
         if ( duplicates.length > 0 ) throw new Error( `Duplicate definitions for: ${duplicates.join( ',' )}` );
 
         for ( let arg of this._validArgs ) {
+            // Check if options for this argument are valid
             if ( arg.options !== undefined ) {
                 const verifier = allVerifiers.get( arg.type );
                 if ( verifier ) {
                     const valid = verifier.verifyOptions( arg.options );
                     if ( !valid ) {
                         throw new Error( `Invalid default options for ${arg.name}` );
+                    }
+                    if ( arg.dflt !== undefined ) {
+                        const defaultVerified = verifier.verifyArgument( arg.name, arg.dflt, arg.options );
+                        if ( !defaultVerified.valid ) {
+                            throw new Error( `Default value for ${arg.name} is not valid` );
+                        }
                     }
                 }
             }
@@ -140,7 +147,7 @@ export class VrcConf<T extends KV> {
                 throw new Error( `Unknown argument type ${type}, no verifier found.` );
             }
 
-            el.validationResult = verifier.verifyArgument( key, val as any );
+            el.validationResult = verifier.verifyArgument( key, val as any, el.vrcArgument.options );
         }
     }
 

@@ -17,7 +17,7 @@ export class NumberVerifier extends AbstractTypeVerifier {
 
             numberValue = Number( val );
 
-            if ( options !== undefined && !options.includes( val ) ) {
+            if ( options !== undefined && !options.includes( numberValue ) ) {
                 isValid = false;
                 warning = `Argument ${key} is not a valid option`;
             }

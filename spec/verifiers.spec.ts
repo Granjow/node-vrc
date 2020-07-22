@@ -3,6 +3,7 @@ import { ValidationResult, verifiers } from '../src/verifiers/verifiers';
 describe( 'Verifiers', () => {
 
     const verifierList = Array.from( verifiers.verifiers.entries() );
+    const verifierListWithoutOptions = verifierList.filter( ( el ) => el[ 0 ] !== 'string' && el[ 0 ] !== 'number' );
 
     test.each( verifierList )( 'support undefined arguments for type %s', ( k, v ) => {
         let result : ValidationResult | undefined = undefined;
@@ -19,6 +20,11 @@ describe( 'Verifiers', () => {
 
         // @ts-ignore
         expect( result.value ).toBeDefined();
+    } );
+
+    test.each( verifierListWithoutOptions )( 'throws error when options are provided for type %s', ( k, v ) => {
+        let result : ValidationResult | undefined = undefined;
+        expect( () => v.verifyOptions( [] ) ).toThrow();
     } );
 
 } );

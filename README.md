@@ -63,6 +63,7 @@ console.log( conf.conf.balloons ); // 99
 ### v2.3.0 – 2020-07-22
 
 * Add support for options to number type parameter
+* Default arguments are validated against options
 
 
 ### v2.2.0 – 2020-06-27
