@@ -1,6 +1,8 @@
-import { stringArrayVerifier } from '../src/verifiers/string-array-verifier';
+import { StringArrayVerifier } from '../src/verifiers/string-array-verifier';
 
 describe( 'string array', () => {
+
+    const stringArrayVerifier = new StringArrayVerifier().verifyArgument;
 
     it( 'allows single string', () => {
         const result = stringArrayVerifier( 'foo', 'bar' );

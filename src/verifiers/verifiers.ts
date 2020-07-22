@@ -1,9 +1,9 @@
-import { numberVerifier } from './number-verifier';
-import { numberArrayVerifier } from './number-array-verifier';
-import { numberArrayArrayVerifier } from './number-array-array-verifier';
-import { stringVerifier } from './string-verifier';
-import { stringArrayVerifier } from './string-array-verifier';
-import { booleanVerifier } from './boolean-verifier';
+import { NumberVerifier } from './number-verifier';
+import { StringVerifier } from './string-verifier';
+import { StringArrayVerifier } from './string-array-verifier';
+import { BooleanVerifier } from './boolean-verifier';
+import { NumberArrayVerifier } from './number-array-verifier';
+import { NumberArrayArrayVerifier } from './number-array-array-verifier';
 
 export interface ValidationResult {
     valid : boolean;
@@ -12,8 +12,19 @@ export interface ValidationResult {
     canUseDefaultFallback : boolean;
 }
 
+export interface OptionsValidationResult {
+    valid : boolean;
+    value : any[];
+    warnings: string[];
+}
+
 export interface VerifierFunction {
-    ( key : string, value : any, options? : string[] ) : ValidationResult;
+    ( key : string, value : any, options? : any[] ) : ValidationResult;
+}
+
+export interface TypeVerifier {
+    verifyArgument : VerifierFunction;
+    verifyOptions : ( options? : any[] ) => OptionsValidationResult;
 }
 
 export enum Verifier {
@@ -30,34 +41,34 @@ class Verifiers {
     constructor() {
     }
 
-    registerVerifier( name : Verifier, verifier : VerifierFunction ) {
+    registerVerifier( name : Verifier, verifier : TypeVerifier ) {
         if ( this._verifiers.has( name ) ) throw new Error( `Verifier ${name} is already registered.` );
         this._verifiers.set( name, verifier );
     }
 
-    get( name : Verifier ) : VerifierFunction {
+    get( name : Verifier ) : TypeVerifier {
         const verifier = this._verifiers.get( name );
         if ( !verifier ) throw new Error( `Verifier ${name} not found.` );
         return verifier;
     }
 
-    get verifiers() : Map<string, VerifierFunction> {
+    get verifiers() : Map<string, TypeVerifier> {
         return this._verifiers;
     }
 
-    private _verifiers : Map<Verifier, VerifierFunction> = new Map();
+    private _verifiers : Map<Verifier, TypeVerifier> = new Map();
 
 }
 
 export const verifiers = new Verifiers();
-verifiers.registerVerifier( Verifier.number, numberVerifier );
-verifiers.registerVerifier( Verifier.numberArray, numberArrayVerifier );
-verifiers.registerVerifier( Verifier.numberArray2D, numberArrayArrayVerifier );
-verifiers.registerVerifier( Verifier.string, stringVerifier );
-verifiers.registerVerifier( Verifier.stringArray, stringArrayVerifier );
-verifiers.registerVerifier( Verifier.boolean, booleanVerifier );
+verifiers.registerVerifier( Verifier.number, new NumberVerifier() );
+verifiers.registerVerifier( Verifier.numberArray, new NumberArrayVerifier() );
+verifiers.registerVerifier( Verifier.numberArray2D, new NumberArrayArrayVerifier() );
+verifiers.registerVerifier( Verifier.string, new StringVerifier() );
+verifiers.registerVerifier( Verifier.stringArray, new StringArrayVerifier() );
+verifiers.registerVerifier( Verifier.boolean, new BooleanVerifier() );
 
-export const allVerifiers : Map<string, ( key : string, val : string ) => ValidationResult> = new Map();
+export const allVerifiers : Map<string, TypeVerifier> = new Map();
 allVerifiers.set( 'number', verifiers.get( Verifier.number ) );
 allVerifiers.set( 'number[]', verifiers.get( Verifier.numberArray ) );
 allVerifiers.set( 'number[][]', verifiers.get( Verifier.numberArray2D ) );

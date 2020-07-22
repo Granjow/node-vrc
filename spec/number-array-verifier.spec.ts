@@ -1,6 +1,8 @@
-import { numberArrayVerifier } from '../src/verifiers/number-array-verifier';
+import { NumberArrayVerifier } from '../src/verifiers/number-array-verifier';
 
 describe( 'Number array', () => {
+
+    const numberArrayVerifier = new NumberArrayVerifier().verifyArgument;
 
     it( 'is parsed', () => {
         const result = numberArrayVerifier( 'foo', '1,2,3' );

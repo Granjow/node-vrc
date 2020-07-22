@@ -1,13 +1,35 @@
-import { ValidationResult, VerifierFunction } from './verifiers';
+import { ValidationResult } from './verifiers';
+import { AbstractTypeVerifier } from './abstract-type-verifier';
 
 const check = require( 'check-types' );
 
-export const numberVerifier : VerifierFunction = ( key : string, val : any ) : ValidationResult => {
-    const isValid = check.number( val );
-    return {
-        valid : isValid,
-        value : val,
-        warning : !isValid ? `Argument ${key} must be a number, is ${JSON.stringify( val )}` : undefined,
-        canUseDefaultFallback : val === undefined,
+export class NumberVerifier extends AbstractTypeVerifier {
+    verifyArgument( key : string, val : any, options? : any[] ) : ValidationResult {
+
+        let isValid = true;
+        let warning : string | undefined = undefined;
+        let numberValue : number | undefined = undefined;
+
+        if ( !check.number( val ) ) {
+            isValid = false;
+            warning = `Argument ${key} must be a number, is ${JSON.stringify( val )}`;
+        } else {
+
+            numberValue = Number( val );
+
+            if ( options !== undefined && !options.includes( val ) ) {
+                isValid = false;
+                warning = `Argument ${key} is not a valid option`;
+            }
+
+        }
+
+        return {
+            valid: isValid,
+            value: val,
+            warning: warning,
+            canUseDefaultFallback: val === undefined,
+        }
     }
-};
+
+}

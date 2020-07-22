@@ -3,6 +3,7 @@
     "strict": true,
     "module": "commonjs",
     "noImplicitAny": true,
+    "esModuleInterop": true,
     "removeComments": false,
     "preserveConstEnums": true,
     "inlineSourceMap": true,

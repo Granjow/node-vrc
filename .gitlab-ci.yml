@@ -7,3 +7,4 @@ test:
     - npm ci
     - npm run build
     - npm run test
+  coverage: '/All files[ |]+(\d+\.\d+)/'

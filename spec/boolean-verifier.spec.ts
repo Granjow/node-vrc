@@ -1,6 +1,8 @@
-import { booleanVerifier } from '../src/verifiers/boolean-verifier';
+import { BooleanVerifier } from '../src/verifiers/boolean-verifier';
 
 describe( 'Boolean', () => {
+
+    const booleanVerifier = new BooleanVerifier().verifyArgument;
 
     it( 'parses booleans (true)', () => {
         const result = booleanVerifier( '', true );
@@ -26,11 +28,14 @@ describe( 'Boolean', () => {
         expect( result.value ).toBe( false );
     } );
 
-    it( 'does not allow other values', () => {
-        const tests = [ 'abc', 'true ', '', undefined, null, 22, 1, 0, -1 ];
-        for ( let test in tests ) {
-            expect( booleanVerifier( '', test ).valid ).toBe( false, `Not a boolean: ${test}` );
-        }
+    test.each( [
+        [ 'abc' ], [ 'true ' ],
+        [ '' ], [ undefined ],
+        [ null ], [ 22 ],
+        [ 1 ], [ 0 ],
+        [ -1 ]
+    ] )( 'does not allow %p', ( what ) => {
+        expect( booleanVerifier( '', what ).valid ).toBe( false );
     } );
 
 } );

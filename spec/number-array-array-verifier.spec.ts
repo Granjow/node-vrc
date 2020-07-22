@@ -1,6 +1,9 @@
-import { numberArrayArrayVerifier } from '../src/verifiers/number-array-array-verifier';
+import { NumberArrayArrayVerifier } from '../src/verifiers/number-array-array-verifier';
 
 describe( '2D Number array', () => {
+
+    const verifier = new NumberArrayArrayVerifier();
+    const numberArrayArrayVerifier = ( name : string, arg : any ) => verifier.verifyArgument( name, arg );
 
     it( 'supports JS arrays', () => {
         const arr = [ [ 1 ], [ 2, 3 ] ];
@@ -18,9 +21,9 @@ describe( '2D Number array', () => {
     it( 'parses JSON strings', () => {
         const arr = [ [ 1 ], [ 2, 3 ] ];
         const result = numberArrayArrayVerifier( 'foo', JSON.stringify( arr ) );
+        expect( result.warning ).not.toBeTruthy();
         expect( result.valid ).toBe( true );
         expect( result.value ).toEqual( arr );
-        expect( result.warning ).not.toBeTruthy();
     } );
 
 } );

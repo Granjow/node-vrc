@@ -15,9 +15,6 @@ export interface VrcSettings {
 
 export class VrcConf<T extends KV> {
 
-    // TODO print all arguments
-    // TODO mark arguments as secrets (do not print)
-
     constructor( appName : string, validArgs : VrcArgument[], settings? : VrcSettings ) {
 
         this._appName = appName;
@@ -28,6 +25,15 @@ export class VrcConf<T extends KV> {
         if ( duplicates.length > 0 ) throw new Error( `Duplicate definitions for: ${duplicates.join( ',' )}` );
 
         for ( let arg of this._validArgs ) {
+            if ( arg.options !== undefined ) {
+                const verifier = allVerifiers.get( arg.type );
+                if ( verifier ) {
+                    const valid = verifier.verifyOptions( arg.options );
+                    if ( !valid ) {
+                        throw new Error( `Invalid default options for ${arg.name}` );
+                    }
+                }
+            }
             this._processedArgs.set( arg.name, new ProcessedArgument( arg ) );
         }
 
@@ -134,7 +140,7 @@ export class VrcConf<T extends KV> {
                 throw new Error( `Unknown argument type ${type}, no verifier found.` );
             }
 
-            el.validationResult = verifier( key, val as any );
+            el.validationResult = verifier.verifyArgument( key, val as any );
         }
     }
 

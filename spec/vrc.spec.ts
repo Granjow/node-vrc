@@ -88,14 +88,14 @@ describe( 'vrc', () => {
             const conf = new Vrc( appName, [
                 { name: 'value', type: 'boolean', dflt: false, desc: '' },
             ] ).conf;
-            expect( conf[ 'value' ] ).toBeFalse();
+            expect( conf[ 'value' ] ).toBe( false );
         } );
 
         it( 'uses default boolean (true)', () => {
             const conf = new Vrc( appName, [
                 { name: 'value', type: 'boolean', dflt: true, desc: '' },
             ] ).conf;
-            expect( conf[ 'value' ] ).toBeTrue();
+            expect( conf[ 'value' ] ).toBe( true );
         } );
 
         it( 'uses default number', () => {
@@ -109,7 +109,7 @@ describe( 'vrc', () => {
             const conf = new Vrc( appName, [
                 { name: 'value', type: 'string', dflt: 'foo123', desc: '' },
             ] );
-            expect( conf.isDefaultValue( 'value' ) ).toBeTrue();
+            expect( conf.isDefaultValue( 'value' ) ).toBe( true );
             expect( conf.get( 'value' ) ).toBe( 'foo123' );
         } );
 
@@ -118,7 +118,7 @@ describe( 'vrc', () => {
             const conf = new Vrc( appName, [
                 { name: 'value', type: 'number', dflt: 123, desc: '' },
             ] );
-            expect( conf.isDefaultValue( 'value' ) ).toBeFalse();
+            expect( conf.isDefaultValue( 'value' ) ).toBe( false );
             expect( conf.get( 'value' ) ).not.toBeDefined();
         } );
 
@@ -127,7 +127,7 @@ describe( 'vrc', () => {
             const conf = new Vrc( appName, [
                 { name: 'value', type: 'number', dflt: 123, desc: '' },
             ] );
-            expect( conf.isDefaultValue( 'value' ) ).toBeFalse();
+            expect( conf.isDefaultValue( 'value' ) ).toBe( false );
             expect( conf.get( 'value' ) ).toBe( 789 );
         } );
 

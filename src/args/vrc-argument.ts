@@ -4,6 +4,6 @@ export interface VrcArgument {
     desc : string;
     dflt : any;
     secr? : boolean;
-    options? : string[];
+    options? : string[] | number[];
 }
 
