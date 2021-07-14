@@ -60,6 +60,14 @@ console.log( conf.conf.balloons ); // 99
 ## Changelog
 
 
+### v2.3.2 – 2021-07-14
+
+* Update dependencies
+
+### v2.3.1 – 2020-12-15
+
+* Update dependencies
+
 ### v2.3.0 – 2020-07-22
 
 * Add support for options to number type parameter
