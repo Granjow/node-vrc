@@ -1,5 +1,5 @@
-export interface VrcArgument {
-    name : string;
+export interface VrcArgument<TKey extends string> {
+    name : TKey;
     type : string;
     desc : string;
     dflt : any;
