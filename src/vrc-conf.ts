@@ -15,7 +15,7 @@ export interface VrcSettings {
 
 export class VrcConf<T extends KV> {
 
-    constructor( appName : string, validArgs : VrcArgument<Extract<keyof T, string>>[], settings? : VrcSettings ) {
+    constructor( appName : string, validArgs : VrcArgument[], settings? : VrcSettings ) {
 
         this._appName = appName;
         this._validArgs = validArgs;
@@ -151,7 +151,7 @@ export class VrcConf<T extends KV> {
         }
     }
 
-    private getDuplicateKeys( args : VrcArgument<string>[] ) : string[] {
+    private getDuplicateKeys( args : VrcArgument[] ) : string[] {
         const keys : Set<string> = new Set();
         const duplicates : string[] = [];
 
@@ -168,7 +168,7 @@ export class VrcConf<T extends KV> {
 
     private readonly _settings : VrcSettings;
     private readonly _appName : string;
-    private readonly _validArgs : VrcArgument<Extract<keyof T, string>>[];
+    private readonly _validArgs : VrcArgument[];
     private readonly _unnamedArgs : any[] = [];
     private readonly _processedArgs : Map<string, ProcessedArgument> = new Map();
     private readonly _rawConf : any;

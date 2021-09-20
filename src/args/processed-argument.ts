@@ -3,7 +3,7 @@ import { ValidationResult } from '../verifiers/verifiers';
 
 export class ProcessedArgument {
 
-    constructor( public readonly vrcArgument : VrcArgument<string> ) {
+    constructor( public readonly vrcArgument : VrcArgument ) {
     }
 
     get value() : any {

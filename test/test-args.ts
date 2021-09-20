@@ -1,14 +1,8 @@
 import { Vrc } from '../src';
 
 interface Conf {
-    name: string;
-    daylight: boolean;
-    'main.sub': string;
-    strArr: string[];
-    count: number;
-    type: string;
-    level: number;
-    secret: string;
+    name : string;
+    daylight : boolean;
 }
 
 const conf = new Vrc<Conf>( 'test', [

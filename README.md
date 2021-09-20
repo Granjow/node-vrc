@@ -60,10 +60,6 @@ console.log( conf.conf.balloons ); // 99
 ## Changelog
 
 
-### v2.4 – 2021-08-25
-
-* Make arguments typed so the parameters must match the provided interface
-
 ### v2.3.2 – 2021-07-14
 
 * Update dependencies
