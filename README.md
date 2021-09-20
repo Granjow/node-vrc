@@ -60,12 +60,9 @@ console.log( conf.conf.balloons ); // 99
 ## Changelog
 
 
-### v2.3.2 – 2021-07-14
+### v2.5.0 – 2021-09-20
 
-* Update dependencies
-
-### v2.3.1 – 2020-12-15
-
+* Revert TypeScript changes from 2.4.0
 * Update dependencies
 
 ### v2.3.0 – 2020-07-22
