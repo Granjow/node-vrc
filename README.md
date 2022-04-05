@@ -59,6 +59,10 @@ console.log( conf.conf.balloons ); // 99
 
 ## Changelog
 
+### v2.5.2 – 2022-04-05
+
+* Update dependencies
+
 ### v2.5.1 – 2022-02-01
 
 * Update dependencies
