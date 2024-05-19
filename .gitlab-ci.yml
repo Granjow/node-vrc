@@ -1,6 +1,5 @@
-test:
+.test:
   stage: test
-  image: node:10
   tags:
     - linux
   script:
@@ -8,3 +7,19 @@ test:
     - npm run build
     - npm run test
   coverage: '/All files[ |]+(\d+\.\d+)/'
+
+test-10:
+  extends: .test
+  image: node:10
+
+test-18:
+  extends: .test
+  image: node:18
+
+test-20:
+  extends: .test
+  image: node:20
+
+test-22:
+  extends: .test
+  image: node:22
