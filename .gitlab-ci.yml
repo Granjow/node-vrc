@@ -1,4 +1,5 @@
 build:
+  stage: build
   image: node:18
   tags:
     - linux
@@ -20,17 +21,13 @@ build:
     - npm run test
   coverage: '/All files[ |]+(\d+\.\d+)/'
 
-test-10:
+test-14:
   extends: .test
-  image: node:10
+  image: node:14
 
 test-18:
   extends: .test
   image: node:18
-
-test-20:
-  extends: .test
-  image: node:20
 
 test-22:
   extends: .test
