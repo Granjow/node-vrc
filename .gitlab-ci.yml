@@ -8,9 +8,9 @@
     - npm run test
   coverage: '/All files[ |]+(\d+\.\d+)/'
 
-test-10:
+test-12:
   extends: .test
-  image: node:10
+  image: node:12
 
 test-18:
   extends: .test

@@ -59,6 +59,12 @@ console.log( conf.conf.balloons ); // 99
 
 ## Changelog
 
+### v2.6.0 – 2024-05-19
+
+* Breaking: Constructor throws an error if an argument starts with `no-`
+  because this is used as a prefix for negated boolean arguments by `rc`.
+  (If this causes issues, please open an issue on GitHub.)
+
 ### v2.5.3 – 2024-04-09
 
 * Update dependencies
