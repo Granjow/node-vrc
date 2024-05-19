@@ -5,7 +5,7 @@ import mock = jest.mock;
 
 describe( 'vrc', () => {
 
-    const setArgs = ( args : string[] ) => process.argv = [ 'x', 'y' ].concat( ...args );
+    const setArgs = ( args: string[] ) => process.argv = [ 'x', 'y' ].concat( ...args );
 
     const appName = 'testapp';
     const configPath = `./.${appName}rc`;
@@ -74,6 +74,13 @@ describe( 'vrc', () => {
             { name: 'value', dflt: false, desc: 'Foo', type: 'boolean' },
         ] );
         expect( f ).toThrow();
+    } );
+
+    it( 'throws an error for arguments starting with "no-"', () => {
+        const f = () => new Vrc( appName, [
+            { name: 'no-value', dflt: false, desc: 'Foo', type: 'boolean' },
+        ] );
+        expect( f ).toThrow( 'reserved for negated' );
     } );
 
     describe( 'Default Arguments', () => {

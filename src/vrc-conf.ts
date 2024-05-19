@@ -25,6 +25,11 @@ export class VrcConf<T extends KV> {
         if ( duplicates.length > 0 ) throw new Error( `Duplicate definitions for: ${duplicates.join( ',' )}` );
 
         for ( let arg of this._validArgs ) {
+
+            if (arg.name.startsWith('no-')) {
+                throw new Error( `Arguments starting with 'no-' are reserved for negated boolean arguments. Found: ${arg.name}` );
+            }
+
             // Check if options for this argument are valid
             if ( arg.options !== undefined ) {
                 const verifier = allVerifiers.get( arg.type );
