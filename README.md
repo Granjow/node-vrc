@@ -59,6 +59,16 @@ console.log( conf.conf.balloons ); // 99
 
 ## Changelog
 
+### v2.7.0 – 2024-06-11
+
+* Added: `VrcSettings` accept an `additionalHelp` callback function which, if
+  defined, can print additional help text which is shown on `--help`.
+
+  ```ts
+  const conf = new VrcConf( 'foo', [], { additionalHelp: () => 'More details' } );
+  ```
+* Changed: `braces` dependency updated
+
 ### v2.6.0 – 2024-05-19
 
 * Breaking: Constructor throws an error if an argument starts with `no-`

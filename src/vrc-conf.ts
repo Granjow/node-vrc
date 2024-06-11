@@ -11,6 +11,7 @@ export interface KV {
 
 export interface VrcSettings {
     description? : string;
+    additionalHelp?: () => string;
 }
 
 export class VrcConf<T extends KV> {
@@ -69,6 +70,10 @@ export class VrcConf<T extends KV> {
     run() : VrcConf<T> {
         if ( this.showHelp ) {
             console.log( this.help );
+
+            if ( this._settings.additionalHelp !== undefined ) {
+                console.log( this._settings.additionalHelp() );
+            }
 
             const exitCode = this.invalidKeys.length > 0 ? 1 : 0;
             process.exit( exitCode );
