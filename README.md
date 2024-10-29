@@ -59,6 +59,10 @@ console.log( conf.conf.balloons ); // 99
 
 ## Changelog
 
+### v2.7.1 – 2024-10-29
+
+* Update dependencies
+
 ### v2.7.0 – 2024-06-11
 
 * Added: `VrcSettings` accept an `additionalHelp` callback function which, if

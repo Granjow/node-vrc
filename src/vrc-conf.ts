@@ -92,7 +92,7 @@ export class VrcConf<T extends KV> {
      * @returns `true`, if the default value was used.
      */
     isDefaultValue( key : string ) : boolean {
-        return !this._processedArgs.get( key )?.isUserDefined ?? false;
+        return !(this._processedArgs.get( key )?.isUserDefined ?? false);
     }
 
     isValid( key : string ) : boolean {
